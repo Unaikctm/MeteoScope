@@ -6,4 +6,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//prueba
+Route::get('/inicio', function () {
+    return view('inicio');
+});
+
