@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use App\Models\Baliza;
 
 class AemetController extends Controller
 {
     public function inicio() {
-        return view('inicio', ['balizas' => $this->getBalizas()]);
+        return view('inicio', ['balizas' => Baliza::all()]);
     }
+    public function aemet($ciudad){
+        $id = Baliza::where('nombre', $ciudad)->first()->id_estacion_aemet;
 
-    public function getBalizas(){
-        return DB::table('baliza')->get();
+        return view('aemet', ['id' => $id]);
     }
 }
