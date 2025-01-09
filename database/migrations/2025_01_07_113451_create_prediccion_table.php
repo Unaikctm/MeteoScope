@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('prediccion', function (Blueprint $table) {
             $table->id();
-            $table->string('localizacion');
+            $table->foreignId('id_baliza')->nullable()->constrained('baliza')->onDelete('cascade');
             $table->dateTime('timestamp');
             $table->float('temperatura');
             $table->string('cielo');

@@ -13,28 +13,24 @@ class PrediccionSeeder extends Seeder
      */
     public function run(): void
     {
-        $ciudades = [
-            ["nombre" => "Irun"],
-            ["nombre" => "Errenteria"],
-            ["nombre" => "Donostia/San Sebastián"],
-            ["nombre" => "Hondarribia"],
-            ["nombre" => "Pasaia"],
-        ];
+        $balizas = DB::table('baliza')->get(); // Obtener las balizas de la base de datos
 
         $data = [];
         $now = Carbon::now()->startOfDay();
 
-        foreach ($ciudades as $ciudad) {
+        foreach ($balizas as $baliza) {
             for ($hour = 0; $hour < 24; $hour++) {
                 $timestamp = $now->copy()->addHours($hour);
 
                 $data[] = [
-                    'localizacion' => $ciudad['nombre'],
+                    'id_baliza' => $baliza->id, // Asociar predicción a la baliza
                     'timestamp' => $timestamp,
                     'temperatura' => rand(5, 45),
                     'cielo' => $this->randomSkyCondition(),
                     'humedad' => rand(0, 90),
                     'probabilidad_precipitacion' => rand(0, 100),
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
             }
         }
