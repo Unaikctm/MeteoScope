@@ -12,16 +12,6 @@
 </head>
 <body>
     <div id="mapid" style="height: 800px;width: 50%;float: left;"></div>
-    <table id="tablaOfertas" style="float: left;margin-left:3%; width: 45%">
-        <thead>
-            <tr>
-                <th id="numOfertas" colspan="4">Número de Ofertas: 0</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Aquí se insertarán las filas de la tabla dinámicamente -->
-        </tbody>
-    </table>
     <script>
         //Mapa en OpenStreetMap
         var map = L.map('mapid').setView([43.0, -2.5], 9);
@@ -35,28 +25,15 @@
         balizas.forEach(baliza => {
             var marker = L.marker([baliza.latitud, baliza.longitud]).addTo(map);
             marker.bindPopup(baliza.nombre);
+            /*
             marker.bindTooltip(baliza.nombre, {
-                permanent: true,
                 direction: 'top',
-                offset: L.point(0, -20)
+                offset: L.point(0, 0)
             });
+            */
         });
 
     </script>
 
-    <script>
-        let predicciones = [];
-
-        async function obtenerPredicciones() {
-            try {
-                const respuesta = await fetch('');
-                ofertas = await respuesta.json();
-            } catch (error) {
-                console.error('Error al cargar las ofertas:', error);
-            }
-        }
-
-        window.onload = obtenerPredicciones;
-    </script>
 </body>
 </html>
