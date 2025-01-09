@@ -24,36 +24,18 @@
     </table>
     <script>
         //Mapa en OpenStreetMap
-        var map = L.map('mapid').setView([43.225, -2.1], 10);
+        var map = L.map('mapid').setView([43.0, -2.5], 9);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        var ciudades = [];
-        ciudades.push({"nombre": "Irun", "latitud": 43.3390, "longitud": -1.7896});
-        ciudades.push({"nombre": "Errenteria", "latitud": 43.3119, "longitud": -1.8985});
-        ciudades.push({"nombre": "Donostia/San Sebastián", "latitud": 43.3183, "longitud": -1.9812});
-        ciudades.push({"nombre": "Hondarribia", "latitud": 43.3675, "longitud": -1.7881});
-        ciudades.push({"nombre": "Pasaia", "latitud": 43.3194, "longitud": -1.9516});
+        var balizas = @json($balizas);
 
-        var todosMarker = L.marker([43.425, -2.1], {icon: L.icon({
-            iconUrl:"https://www.citypng.com/public/uploads/preview/hd-red-locator-location-mark-sign-icon-png-701751695033097ea7mbblkgd.png?v=2024110812",
-            iconSize:[40,40],
-            iconAnchor: [12, 41],
-            popupAnchor: [0, -41]
-        })}).addTo(map);
-        todosMarker.bindPopup("TODOS").on('click', () => filtrarTabla("TODOS"));
-        todosMarker.bindTooltip("TODOS", {
-                permanent: true,
-                direction: 'top',
-                offset: L.point(0, -40)
-            });
-
-        ciudades.forEach(ciudad => {
-            var marker = L.marker([ciudad.latitud, ciudad.longitud]).addTo(map);
-            marker.bindPopup(ciudad.nombre);
-            marker.on('click', () => filtrarTabla(ciudad.nombre.toUpperCase()));
-            marker.bindTooltip(ciudad.nombre, {
+        // Crear marcadores para las balizas
+        balizas.forEach(baliza => {
+            var marker = L.marker([baliza.latitud, baliza.longitud]).addTo(map);
+            marker.bindPopup(baliza.nombre);
+            marker.bindTooltip(baliza.nombre, {
                 permanent: true,
                 direction: 'top',
                 offset: L.point(0, -20)

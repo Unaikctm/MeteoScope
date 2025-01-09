@@ -4,21 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class AemetController extends Controller
 {
-    public function index() {
-        return view('pokemon.pokemon');
+    public function inicio() {
+        return view('inicio', ['balizas' => $this->getBalizas()]);
     }
 
-    public function show($ciudad){
-        $apiUrl = '' . $ciudad;
-
-        $response = Http::get($apiUrl);
-
-        $ciudad = $response->json();
-
-        return view('ciudad.show', ['ciudad' => $ciudad]);
+    public function getBalizas(){
+        return DB::table('baliza')->get();
     }
-
 }
