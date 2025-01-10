@@ -13,7 +13,15 @@ class AemetController extends Controller
         return view('inicio', ['balizas' => Baliza::all()]);
     }
     public function aemet($ciudad){
-        $id = Baliza::where('nombre', $ciudad)->first()->id_estacion_aemet;
+        $baliza = Baliza::where('nombre', $ciudad)->first();
+
+        // Verificar si se encontró la baliza
+        if (!$baliza) {
+            // Opcional: Manejar el caso en que no se encuentra la ciudad
+            return response()->json(['error' => 'Ciudad no encontrada'], 404);
+        }
+
+        $id = $baliza->id_estacion_aemet;
 
         return view('aemet', ['id' => $id]);
     }
