@@ -7,6 +7,7 @@ use App\Models\Prediccion;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use App\Services\OpenWeather;
+use Carbon\Carbon;
 
 class FetchDatos extends Command
 {
@@ -44,6 +45,8 @@ class FetchDatos extends Command
                 'cielo' => $datos['cielo'],
                 'humedad' => $datos['humedad'],
                 'probabilidad_precipitacion' => $datos['probabilidad_precipitacion'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
 

@@ -29,11 +29,12 @@ class OpenWeather
         if ($response->ok()) {
             $data = $response->json();
 
-            // Extraer datos relevantes
             $temp = $data['main']['temp'];
             $description = $data['weather'][0]['description'];
             $humidity = $data['main']['humidity'];
-            $precipitationProbability = $data['rain']['1h'] ?? 0; // Probabilidad de lluvia en la última hora
+
+            // Probabilidad de lluvia en la última hora
+            $precipitationProbability = $data['rain']['1h'] ?? 0;
 
             return [
                 'timestamp' => Carbon::now(), // Fecha y hora actual
