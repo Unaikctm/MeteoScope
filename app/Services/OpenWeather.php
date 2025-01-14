@@ -22,8 +22,8 @@ class OpenWeather
             'lat' => $lat,
             'lon' => $lon,
             'appid' => $this->apiKey,
-            'units' => 'metric', // Temperatura en grados Celsius
-            'lang' => 'es', // Idioma en español
+            'units' => 'metric',
+            'lang' => 'es',
         ]);
 
         if ($response->ok()) {

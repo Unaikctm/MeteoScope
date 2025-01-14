@@ -15,7 +15,7 @@ class FetchDatos extends Command
      *
      * @var string
      */
-    protected $signature = 'app:fetch-datos {lat} {lon}';
+    protected $signature = 'app:fetch-datos';
 
     /**
      * The console command description.
@@ -31,7 +31,6 @@ class FetchDatos extends Command
     {
         $balizas = Baliza::all();
         $apiKey = env('OW_API_KEY');
-        $apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 
         foreach ($balizas as $baliza) {
             $openWeather = new OpenWeather($apiKey);
