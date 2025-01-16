@@ -18,5 +18,6 @@ class Prediccion extends Model
         'cielo',
         'humedad',
         'probabilidad_precipitacion',
+        'velocidad_viento',
     ];
 }

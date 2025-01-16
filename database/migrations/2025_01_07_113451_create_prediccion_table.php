@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('cielo');
             $table->integer('humedad')->unsigned();
             $table->integer('probabilidad_precipitacion')->unsigned();
+            $table->float('velocidad_viento');
             $table->timestamps();
         });
     }

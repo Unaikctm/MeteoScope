@@ -12,26 +12,55 @@ use Carbon\Carbon;
  */
 class PrediccionFactory extends Factory
 {
+    private $prevTemp = []; // Array para almacenar la temperatura previa por baliza
+    private $prevDatetime = []; // Array para almacenar la fecha y hora previa por baliza
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        // Obtener una baliza aleatoria
-        $baliza = Baliza::inRandomOrder()->first();
+        $balizaId = $this->faker->numberBetween(1, 6);
 
-        // Obtener una fecha y hora aleatoria
-        $timestamp = Carbon::now()->startOfDay()->addHours(rand(0, 23));
+        // Si no hay fecha previa para esta baliza, inicia desde el 1 de junio de 2024 a medianoche
+        if (!isset($this->prevDatetime[$balizaId])) {
+            $this->prevDatetime[$balizaId] = Carbon::create(2024, 6, 1, 0, 0, 0);
+        }
+
+        // Limitar la generación de datos hasta las 00:00 del día actual
+        $endDatetime = Carbon::now()->startOfDay();
+        if ($this->prevDatetime[$balizaId]->gte($endDatetime)) {
+            return [];
+        }
+
+        // Si no hay temperatura previa para esta baliza, inicia
+        if (!isset($this->prevTemp[$balizaId])) {
+            $this->prevTemp[$balizaId] = $this->faker->randomFloat(1, 15, 30);
+        } else {
+            // Fluctuar la temperatura en 1 grado
+
+            $this->prevTemp[$balizaId] = $this->faker->randomElement([
+                $this->prevTemp[$balizaId] + 1,
+                $this->prevTemp[$balizaId] - 1,
+            ]);
+
+            $this->prevTemp[$balizaId] = max(15, min($this->prevTemp[$balizaId], 30));
+        }
+
+        // Generar un registro para cada baliza_id
+        $currentDatetime = $this->prevDatetime[$balizaId]->copy();
+        $this->prevDatetime[$balizaId]->addHours(2); // Añadir 2 horas para el siguiente registro
 
         return [
-            'id_baliza' => $baliza->id,
-            'timestamp' => $timestamp,
-            'temperatura' => $this->faker->numberBetween(5, 45),
+            'id_baliza' => $balizaId,
+            'timestamp' => $currentDatetime->format('Y-m-d H:i:s'),
+            'temperatura' => round($this->prevTemp[$balizaId], 1),
             'cielo' => $this->randomSkyCondition(),
-            'humedad' => $this->faker->numberBetween(0, 90),
-            'probabilidad_precipitacion' => $this->faker->numberBetween(0, 100),
+            'humedad' => $this->faker->randomFloat(1, 10, 100),
+            'probabilidad_precipitacion' => round(mt_rand(0, 2000) / 100, 2),
+            'velocidad_viento' => round(mt_rand(0, 100) / 10, 2),
             'created_at' => now(),
             'updated_at' => now(),
         ];
