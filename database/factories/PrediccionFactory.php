@@ -39,8 +39,8 @@ class PrediccionFactory extends Factory
         if (!isset($this->prevTemp[$balizaId])) {
             $this->prevTemp[$balizaId] = $this->faker->randomFloat(1, 15, 30);
         } else {
-            // Fluctuar la temperatura en 1 grado
 
+            // Fluctuar la temperatura en 1 grado
             $this->prevTemp[$balizaId] = $this->faker->randomElement([
                 $this->prevTemp[$balizaId] + 1,
                 $this->prevTemp[$balizaId] - 1,

@@ -35,6 +35,7 @@ class OpenWeather
 
             // Probabilidad de lluvia en la última hora
             $precipitationProbability = $data['rain']['1h'] ?? 0;
+            $velocidadViento = $data['wind']['speed'];
 
             return [
                 'timestamp' => Carbon::now(), // Fecha y hora actual
@@ -42,6 +43,7 @@ class OpenWeather
                 'cielo' => $description,
                 'humedad' => $humidity,
                 'probabilidad_precipitacion' => $precipitationProbability,
+                'velocidad_viento' => $velocidadViento,
             ];
         } else {
             throw new \Exception("Error al obtener los datos: " . $response->status());

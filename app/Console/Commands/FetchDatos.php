@@ -45,6 +45,7 @@ class FetchDatos extends Command
                 'cielo' => $datos['cielo'],
                 'humedad' => $datos['humedad'],
                 'probabilidad_precipitacion' => $datos['probabilidad_precipitacion'],
+                'velocidad_viento' => $datos['velocidad_viento'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
