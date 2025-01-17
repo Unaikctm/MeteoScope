@@ -1,17 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- Incluir la hoja de estilo CSS de Leaflet desde un CDN -->
+    <title>Meteo-Unai</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
-    <!-- JavaScript de Leaflet desde un CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="mapid" style="height: 800px;width: 50%;float: left;"></div>
+    <header>
+        <div class="logo">
+            <h1>Meteo-Unai</h1>
+        </div>
+    </header>
+
+    <nav>
+        <button class="tab-boton active" data-tab="mapa">Mapa</button>
+        <button class="tab-boton" data-tab="balizas">Balizas Seleccionadas</button>
+    </nav>
+
+    <main>
+        <div id="mapa" class="contenido active">
+            <div id="mapid"></div>
+        </div>
+        <div id="balizas" class="contenido">
+            <div class="balizas-lista">
+                <h2>Balizas Seleccionadas</h2>
+                <ul id="balizas-seleccionadas"></ul>
+            </div>
+        </div>
+    </main>
+
     <script src="script.js"></script>
 </body>
 </html>
