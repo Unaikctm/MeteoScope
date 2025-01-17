@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('nombre');
             $table->decimal('latitud', 10, 8);
             $table->decimal('longitud', 11, 8);
-            $table->string('id_estacion_aemet');
             $table->timestamps();
         });
     }

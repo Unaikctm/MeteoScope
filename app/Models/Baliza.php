@@ -15,6 +15,5 @@ class Baliza extends Model
         'nombre',
         'latitud',
         'longitud',
-        'id_estacion_aemet',
     ];
 }
