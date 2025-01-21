@@ -27,7 +27,7 @@ class BalizaSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'nombre' => 'Donostia/San Sebastián',
+                'nombre' => 'Donostia',
                 'latitud' => 43.312817,
                 'longitud' => -1.974834,
                 'created_at' => now(),

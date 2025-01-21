@@ -37,8 +37,8 @@ class OpenWeather
             $precipitationProbability = $data['rain']['1h'] ?? 0;
             $velocidadViento = $data['wind']['speed'];
 
-            // Edita descripción si está lloviendo basado en la humedad y probabilidad de lluvia
-            if ($humidity > 70 && $precipitationProbability > 0) {
+            // Edita descripción si está lloviendo basado en la probabilidad de lluvia
+            if ($precipitationProbability > 0) {
                 $description = 'lluvia';
             }
 

@@ -28,7 +28,8 @@ let markers = new Map();
 function iconoCielo(estado) {
     switch (estado) {
         case 'cielo claro':
-            return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
+            //
+            return `<img src="./imagenes/cielo_claro.png" alt="Sol" width="50" height="50">`;
         case 'algo de nubes':
             return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-sun"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>`;
         case 'muy nuboso':
@@ -44,6 +45,26 @@ function iconoCielo(estado) {
     }
 }
 
+// Función para obtener el fondo de color del tiempo según el estado
+function colorCielo(estado) {
+    switch (estado) {
+        case 'cielo claro':
+            return 'linear-gradient(0deg, rgba(252,158,121,1) 0%, rgba(254,236,153,1) 100%)';
+        case 'algo de nubes':
+            return 'linear-gradient(0deg, rgba(12,112,242,1) 0%, rgba(189,245,255,1) 100%)';
+        case 'muy nuboso':
+            return 'linear-gradient(0deg, rgba(146,186,210,1) 0%, rgba(197,226,247,1) 100%)';
+        case 'niebla':
+            return 'linear-gradient(0deg, rgba(169,169,169,1) 0%, rgba(211,211,211,1) 100%)';
+        case 'bruma':
+            return 'linear-gradient(0deg, rgba(147,147,165,1) 0%, rgba(196,189,201,1) 100%)';
+
+        // Lluvia
+        default:
+            return 'linear-gradient(0deg, rgba(65,95,161,1) 0%, rgba(108,155,204,1) 100%)';
+    }
+}
+
 // Funciones para actualizar la lista de balizas
 function actualizarListaBalizas() {
     const lista = document.getElementById('balizas-seleccionadas');
@@ -52,6 +73,7 @@ function actualizarListaBalizas() {
         getDatosHoyBaliza(baliza).then(() => {
             const card = document.createElement('div');
             card.className = 'baliza-card';
+            card.style.background = colorCielo(baliza.datosHoy.cielo);
             card.innerHTML = `
                 <div class="baliza-header">
                     <h3>${baliza.nombre}</h3>
@@ -64,7 +86,6 @@ function actualizarListaBalizas() {
                         <div class="weather-text">
                             ${baliza.datosHoy.cielo}
                         </div>
-                        <button class="remove-baliza" onclick="eliminarBaliza('${baliza.nombre}')">✕</button>
                     </div>
                 </div>
             `;
@@ -135,7 +156,9 @@ fetch(url)
                         popupAnchor: [1, -34],
                         shadowSize: [41, 41]
                     }));
-                    balizasSeleccionadas.add(baliza);
+                    if (!balizasSeleccionadas.has(baliza)){
+                        balizasSeleccionadas.add(baliza);
+                    }
                 }
                 actualizarListaBalizas();
             });

@@ -68,7 +68,7 @@ class PrediccionFactory extends Factory
 
     private function randomSkyCondition()
     {
-        $conditions = ['Despejado', 'Nublado', 'Lluvia', 'Tormenta', 'Niebla'];
+        $conditions = ['cielo claro', 'algo de nubes', 'muy nuboso', 'niebla', 'bruma', 'lluvia'];
         return $conditions[array_rand($conditions)];
     }
 }
