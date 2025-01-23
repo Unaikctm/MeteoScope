@@ -36,7 +36,6 @@ class DatosController extends Controller
         }
 
         $predicciones = Prediccion::where('id_baliza', $baliza->id)
-            ->whereDate('timestamp', now())
             ->orderBy('timestamp', 'desc')
             ->limit(1)
             ->get();

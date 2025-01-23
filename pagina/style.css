@@ -68,60 +68,6 @@ nav {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.lista-balizas {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.lista-balizas h2 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
-}
-
-#balizas-seleccionadas {
-    list-style: none;
-}
-
-#balizas-seleccionadas li {
-    padding: 1rem;
-    border-bottom: 1px solid #ecf0f1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#balizas-seleccionadas li:last-child {
-    border-bottom: none;
-}
-
-.baliza-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.baliza-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.remove-baliza {
-    background: none;
-    border: none;
-    color: #e74c3c;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-}
-
-.remove-baliza:hover {
-    background-color: #fde8e7;
-}
-
 .parameters-container {
     display: flex;
     flex-wrap: wrap;
@@ -130,6 +76,7 @@ nav {
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     border-radius: 10px;
+    margin-bottom: 15px;
 }
 
 .parameter {
@@ -156,4 +103,40 @@ nav {
     display: block;
     font-size: 1.2em;
     font-weight: bold;
+}
+
+.balizas-contenedor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.baliza-card {
+    flex: 1 1 calc(33.333% - 16px);
+    max-width: calc(33.333% - 16px);
+    box-sizing: border-box;
+    border-radius: 12px;
+    transition: transform 0.2s;
+    padding: 0.5%;
+    font-size: 1.2em;
+}
+
+.baliza-card:hover {
+    transform: scale(1.05);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .baliza-card {
+        flex: 1 1 calc(50% - 16px); /* En pantallas medianas, 2 columnas */
+        max-width: calc(50% - 16px);
+    }
+}
+
+@media (max-width: 576px) {
+    .baliza-card {
+        flex: 1 1 100%; /* En pantallas pequeñas, 1 columna */
+        max-width: 100%;
+    }
 }
