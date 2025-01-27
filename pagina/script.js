@@ -184,11 +184,29 @@ function getDatosHoyBaliza(baliza) {
         .then(response => response.json())
         .then(data => {
             baliza.datosHoy = data[0];
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtZXQwMS5hcGlrZXkiLCJpc3MiOiJJRVMgUExBSUFVTkRJIEJISSBJUlVOIiwiZXhwIjoyMjM4MTMxMDAyLCJ2ZXJzaW9uIjoiMS4wLjAiLCJpYXQiOjE3MzM5ODgyMTAsImVtYWlsIjoiaWtjdG1AcGxhaWF1bmRpLm5ldCJ9.jUafbRj0bVB0-qXy3If_Xa8CAK3fja-Or7uRj7fzMFVT3HNVygv5ZaxBSxhYI2lKBz8prugwK8Dzt2a_Cr5L2X08STo1QhwfUsgKSnRrvgLj9-5k0oOOWev54EKJYQbXGXIRv7ThUd0UnmrIbkDjHPtYyigl0_q9Xjxz5NBNAathme8WbmblsjYx10Ig5FPVGxbozxvdX2um0BvefzUK5_MpCtem26u8uEfVYYnvRBWBviAG11woUrHLJIDuBifFbu8qKV9L25-pK231KkhUYGr-i_k3zul-ran0tsBg4P5Ezu0b1x_Q3RyuDCb6bO9ocbdL9ttKZkZG4gQfs8GfMw'
+                }
+            };
+
+            // Obtener la previsión meteorológica de la baliza mediante euskalmet
+            return fetch('https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/coast_zone/locations/irun/forecast/at/2024/12/12/for/20241212', options)
+                .then(response => response.json())
+                .then(data => {
+                    baliza.forecast = data.forecastText.SPANISH;
+                })
+                .catch(err => console.error(err));
         })
         .catch(error => {
             console.error('Error al obtener los datos de hoy para la baliza', baliza.nombre, error);
         });
 };
+
+//Funcion para hacer un modal que al hacer hover en el header de la baliza muestre la previsión meteorológica
+
 
 // Función para obtener el icono del parametro
 function iconoParametro(parametro, parametroValue) {
@@ -244,22 +262,27 @@ $(document).ready(function() {
                 // Verifica si el parámetro ya está visible, si no, no se añade
                 if (!card.find(`#${parametro}`).length) {
                     card.append(`${divParametro}`);
-
-                    $(".drag-param").draggable({
-                        helper: "clone", // Clona el elemento arrastrado
-                        revert: "invalid" // Devuelve el elemento si no se suelta en un contenedor válido
-                    });
                 }
             }
         });
     });
+    // Hover en parámetros añadidos con drag and drop
+    $(document).on("mouseenter", ".drag-param", function () {
+        const $param = $(this);
 
+        // Añadir clase de estilo y botón de eliminación
+        if (!$param.find(".x").length) {
+            $param.append(`<button class="x">✖</button>`);
 
-    //Haz que se elimine el parametro de la card al hacer drag hacia el parameters-container
-    $(".parameters-container").droppable({
-        accept: ".drag-param",
-        drop: function (event, ui) {
-            ui.draggable.remove();
+            // Listener para el botón de eliminación
+            $param.find(".x").on("click", function () {
+                $param.remove(); // Eliminar el parámetro del DOM
+            });
         }
+    });
+
+    $(document).on("mouseleave", ".drag-param", function () {
+        const $param = $(this);
+        $param.find(".").remove();
     });
 });

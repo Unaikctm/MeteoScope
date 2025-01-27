@@ -106,28 +106,108 @@ nav {
 }
 
 .balizas-contenedor {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas por fila en pantallas grandes */
+    gap: 16px; /* Espacio entre tarjetas */
 }
 
 .baliza-card {
-    flex: 1 1 calc(33.333% - 16px);
-    max-width: calc(33.333% - 16px);
-    box-sizing: border-box;
+    width: 100%; /* Ocupar el ancho total de su celda */
     border-radius: 12px;
-    transition: transform 0.2s;
-    padding: 0.5%;
+    padding: 16px; /* Espaciado interno */
     font-size: 1.2em;
+    box-sizing: border-box;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
+/* Hover para efecto visual */
 .baliza-card:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.drag-param {
+    position: relative;
+    padding: 5px 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.drag-param:hover {
+    transform: scale(1.02); /* Ligero zoom al hacer hover */
+}
+
+.drag-param .x {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Mostrar X solo al hacer hover */
+.drag-param:hover .x {
+    opacity: 1;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black with transparency */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* Responsividad */
+@media (max-width: 1024px) {
+    .balizas-contenedor {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas por fila */
+    }
+}
+
 @media (max-width: 768px) {
+    .balizas-contenedor {
+        grid-template-columns: 1fr; /* Una columna por fila */
+    }
     .baliza-card {
         flex: 1 1 calc(50% - 16px); /* En pantallas medianas, 2 columnas */
         max-width: calc(50% - 16px);
