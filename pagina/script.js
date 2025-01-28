@@ -83,7 +83,7 @@ function actualizarListaBalizas() {
             card.style.background = colorCielo(baliza.datosHoy.cielo);
             card.innerHTML = `
                 <div class="baliza-header">
-                    <h3>${baliza.nombre}</h3>
+                    <h3 title="baliza">${baliza.nombre}</h3>
                 </div>
                 <div class="baliza-content">
                     <div>${iconoCielo(baliza.datosHoy.cielo)}</div>
@@ -183,7 +183,42 @@ function getDatosHoyBaliza(baliza) {
     return fetch('http://127.0.0.1:85/datosHoy/' + baliza.nombre)
         .then(response => response.json())
         .then(data => {
+            // Añade los datos actuales a la baliza
             baliza.datosHoy = data[0];
+
+            //Consigue el año, mes y día de la fecha actual y dividelo en variables
+            const fecha = new Date();
+            const año = fecha.getFullYear();
+            let mes = fecha.getMonth() + 1;
+            if (mes < 10) {
+                mes = "0" + mes;
+            }
+            let dia = fecha.getDay();
+            if (dia < 10) {
+                dia = "0" + dia;
+            }
+
+            // Llamada a euksalmet para obtener la previsión meteorológica, el endpoint cambia según la baliza
+            nombreBaliza = baliza.nombre.toLowerCase();
+            switch (nombreBaliza) {
+                case "irun":
+                case "hondarribia":
+                    zona = 'coast_zone';
+                    break;
+                case "donostia":
+                case "errenteria":
+                    zona = 'donostialdea';
+                    break;
+                case "bilbao":
+                    zona = 'great_bilbao';
+                    break;
+                case "gasteiz":
+                    zona = 'vitoria_gasteiz';
+                    break;
+                default:
+                    zona = 'basque_country';
+                    break;
+            }
 
             const options = {
                 method: 'GET',
@@ -193,7 +228,7 @@ function getDatosHoyBaliza(baliza) {
             };
 
             // Obtener la previsión meteorológica de la baliza mediante euskalmet
-            return fetch('https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/coast_zone/locations/irun/forecast/at/2024/12/12/for/20241212', options)
+            return fetch(`https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/${zona}/locations/${nombreBaliza}/forecast/at/${año}/${mes}/${dia}/for/${año}${mes}${dia}`, options)
                 .then(response => response.json())
                 .then(data => {
                     baliza.forecast = data.forecastText.SPANISH;
@@ -284,5 +319,52 @@ $(document).ready(function() {
     $(document).on("mouseleave", ".drag-param", function () {
         const $param = $(this);
         $param.find(".").remove();
+    });
+
+    // Obtener el modal y el botón de cierre
+    const modal = $('#forecastModal');
+    const closeBtn = $('.close');
+
+    // Función para abrir el modal con la previsión meteorológica
+    function abrirModal(forecast) {
+        $('#forecastText').text(forecast); // Mostrar la previsión
+        modal.show(); // Mostrar el modal
+    }
+
+    // Función para cerrar el modal
+    function cerrarModal() {
+        modal.hide(); // Ocultar el modal
+    }
+
+    // Evento para cerrar el modal al hacer clic en la "X"
+    closeBtn.on('click', cerrarModal);
+
+    // Evento para cerrar el modal al hacer clic fuera del contenido
+    $(window).on('click', (event) => {
+        if ($(event.target).is(modal)) {
+            cerrarModal();
+        }
+    });
+
+    // Evento para abrir el modal al hacer clic en el encabezado de la baliza
+    $(document).on('click', '.baliza-header', function() {
+        const balizaCard = $(this).closest('.baliza-card');
+        const balizaNombre = balizaCard.attr('id');
+        const baliza = Array.from(balizasSeleccionadas).find(b => b.nombre === balizaNombre);
+
+        if (baliza && baliza.forecast) {
+            abrirModal(baliza.forecast);
+        } else {
+            abrirModal('No hay previsión disponible para esta baliza.');
+        }
+    });
+
+    // Cambiar el cursor al pasar sobre el encabezado de la baliza
+    $(document).on('mouseover', '.baliza-header', function() {
+        $(this).css('cursor', 'pointer');
+    });
+
+    $(document).on('mouseout', '.baliza-header', function() {
+        $(this).css('cursor', 'default');
     });
 });
