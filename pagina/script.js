@@ -89,6 +89,9 @@ function actualizarListaBalizas() {
                     <div>${iconoCielo(baliza.datosHoy.cielo)}</div>
                     <div>${baliza.datosHoy.cielo}</div>
                 </div>
+                <div id="fecha_dato">
+                    Recogido el: ${baliza.created_at}
+                </div>
             `;
             lista.appendChild(card);
         });
@@ -232,6 +235,7 @@ function getDatosHoyBaliza(baliza) {
                 .then(response => response.json())
                 .then(data => {
                     baliza.forecast = data.forecastText.SPANISH;
+                    console.log(baliza);
                 })
                 .catch(err => console.error(err));
         })

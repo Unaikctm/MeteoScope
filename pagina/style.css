@@ -159,12 +159,26 @@ nav {
     font-size: 1.2em;
     box-sizing: border-box;
     transition: transform 0.2s, box-shadow 0.2s;
+    position: relative; /* Añade esto para que el posicionamiento absoluto de #last_insert funcione correctamente */
 }
 
 /* Hover para efecto visual */
 .baliza-card:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#fecha_dato {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 0.7em;
+    color: rgba(0, 0, 0, 0.6);
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 8px;
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .drag-param {
