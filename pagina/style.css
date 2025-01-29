@@ -160,12 +160,18 @@ nav {
     box-sizing: border-box;
     transition: transform 0.2s, box-shadow 0.2s;
     position: relative; /* Añade esto para que el posicionamiento absoluto de #last_insert funcione correctamente */
+    min-height: 150px;
+    align-self: start;
 }
 
 /* Hover para efecto visual */
 .baliza-card:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.baliza-card .parametros {
+    flex-grow: 1; /* Permite que la sección de parámetros crezca sin afectar otras cartas */
 }
 
 #fecha_dato {

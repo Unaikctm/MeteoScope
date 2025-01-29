@@ -42,9 +42,4 @@ class DatosController extends Controller
 
         return response()->json($predicciones);
     }
-
-    public function balizas(){
-        $balizas = Baliza::all();
-        return response()->json($balizas);
-    }
 }
