@@ -18,6 +18,7 @@
     <nav>
         <button class="tab-boton active" data-tab="mapa">Mapa</button>
         <button class="tab-boton" data-tab="balizas">El tiempo</button>
+        <button class="tab-boton" data-tab="tab-grafico">Gráfico</button>
     </nav>
 
     <main>
@@ -47,18 +48,37 @@
                 <h2 style="margin-bottom: 15px;">Balizas Seleccionadas</h2>
                 <div id="balizas-seleccionadas" class="balizas-contenedor"></div>
             </div>
+            <!-- Modal para mostrar la previsión meteorológica -->
+            <div id="forecastModal" class="modal">
+                <div class="modal-contenido">
+                    <span class="close">&times;</span>
+                    <h2>Previsión Meteorológica</h2>
+                    <p id="forecastText"></p>
+                </div>
+            </div>
         </div>
-        <!-- Modal para mostrar la previsión meteorológica -->
-        <div id="forecastModal" class="modal">
-            <div class="modal-contenido">
-                <span class="close">&times;</span>
-                <h2>Previsión Meteorológica</h2>
-                <p id="forecastText"></p>
+        <div id="tab-grafico" class="contenido">
+            <div id="grafico">
+                <div id="grafico-controls">
+                    <button id="prevBaliza" class="nav-btn">← Anterior</button>
+                    <span id="currentBalizaNombre">Selecciona fechas y balizas</span>
+                    <button id="nextBaliza" class="nav-btn">Siguiente →</button>
+                </div>
+                <div id="date-selector">
+                    <input type="date" id="fecha-inicio" placeholder="Fecha de inicio">
+                    <input type="date" id="fecha-final" placeholder="Fecha de fin">
+                    <button id="btn-actualizar">Actualizar Gráfico</button>
+                </div>
+                <div id="loading-spinner">
+                    <img src="imagenes/Spinner.svg" alt="Cargando...">
+                </div>
+                <div id="grafico-datos"></div>
             </div>
         </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

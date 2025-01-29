@@ -1,11 +1,15 @@
 // Gestión de pestañas
-document.querySelectorAll('.tab-boton').forEach(button => {
-    button.addEventListener('click', () => {
-        document.querySelectorAll('.tab-boton').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.contenido').forEach(content => content.classList.remove('active'));
+document.querySelectorAll(".tab-boton").forEach((button) => {
+    button.addEventListener("click", () => {
+        document
+            .querySelectorAll(".tab-boton")
+            .forEach((btn) => btn.classList.remove("active"));
+        document
+            .querySelectorAll(".contenido")
+            .forEach((content) => content.classList.remove("active"));
 
-        button.classList.add('active');
-        document.getElementById(button.dataset.tab).classList.add('active');
+        button.classList.add("active");
+        document.getElementById(button.dataset.tab).classList.add("active");
 
         // Cerrar todos los popups activos en el mapa
         map.closePopup();
@@ -13,9 +17,9 @@ document.querySelectorAll('.tab-boton').forEach(button => {
 });
 
 // Inicializar mapa
-const map = L.map('mapid').setView([43.0, -2.5], 9);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
+const map = L.map("mapid").setView([43.0, -2.5], 9);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors",
 }).addTo(map);
 
 // Almacenar balizas seleccionadas
@@ -27,19 +31,19 @@ let markers = new Map();
 // Función para obtener el icono del tiempo según el estado
 function iconoCielo(estado) {
     switch (estado) {
-        case 'cielo claro':
+        case "cielo claro":
             return `<img src="./imagenes/cielo_claro.png" alt="Sol" width="50" height="50">`;
-        case 'algo de nubes':
+        case "algo de nubes":
             return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-sun"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>`;
-        case 'muy nuboso':
-        case 'nubes dispersas':
+        case "muy nuboso":
+        case "nubes dispersas":
             return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloudy"><path d="M17.5 21H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><path d="M22 10a3 3 0 0 0-3-3h-2.207a5.502 5.502 0 0 0-10.702.5"/></svg>`;
-        case 'niebla':
+        case "niebla":
             return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-fog"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 17H7"/><path d="M17 21H9"/></svg>`;
-        case 'bruma':
+        case "bruma":
             return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-drizzle"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M8 19v1"/><path d="M8 14v1"/><path d="M16 19v1"/><path d="M16 14v1"/><path d="M12 21v1"/><path d="M12 16v1"/></svg>`;
-        case 'llovizna ligera':
-        case 'lluvia':
+        case "llovizna ligera":
+        case "lluvia":
             return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-rain-wind"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m9.2 22 3-7"/><path d="m9 13-3 7"/><path d="m17 13-3 7"/></svg>`;
 
         default:
@@ -51,34 +55,34 @@ function iconoCielo(estado) {
 // Función para obtener el fondo de color del tiempo según el estado
 function colorCielo(estado) {
     switch (estado) {
-        case 'cielo claro':
-            return 'linear-gradient(0deg, rgba(252,158,121,1) 0%, rgba(254,236,153,1) 100%)';
-        case 'algo de nubes':
-            return 'linear-gradient(0deg, rgba(12,112,242,1) 0%, rgba(189,245,255,1) 100%)';
-        case 'muy nuboso':
-        case 'nubes dispersas':
-            return 'linear-gradient(0deg, rgba(146,186,210,1) 0%, rgba(197,226,247,1) 100%)';
-        case 'niebla':
-            return 'linear-gradient(0deg, rgba(169,169,169,1) 0%, rgba(211,211,211,1) 100%)';
-        case 'bruma':
-            return 'linear-gradient(0deg, rgba(147,147,165,1) 0%, rgba(196,189,201,1) 100%)';
-        case 'llovizna ligera':
-        case 'lluvia':
-            return 'linear-gradient(0deg, rgba(45,65,101,1) 0%, rgba(72,112,154,1) 100%)';
+        case "cielo claro":
+            return "linear-gradient(0deg, rgba(252,158,121,1) 0%, rgba(254,236,153,1) 100%)";
+        case "algo de nubes":
+            return "linear-gradient(0deg, rgba(12,112,242,1) 0%, rgba(189,245,255,1) 100%)";
+        case "muy nuboso":
+        case "nubes dispersas":
+            return "linear-gradient(0deg, rgba(146,186,210,1) 0%, rgba(197,226,247,1) 100%)";
+        case "niebla":
+            return "linear-gradient(0deg, rgba(169,169,169,1) 0%, rgba(211,211,211,1) 100%)";
+        case "bruma":
+            return "linear-gradient(0deg, rgba(147,147,165,1) 0%, rgba(196,189,201,1) 100%)";
+        case "llovizna ligera":
+        case "lluvia":
+            return "linear-gradient(0deg, rgba(45,65,101,1) 0%, rgba(72,112,154,1) 100%)";
 
         default:
-            return 'linear-gradient(0deg, rgba(0,255,0,1) 0%, rgba(255,255,255,1) 100%)';
+            return "linear-gradient(0deg, rgba(0,255,0,1) 0%, rgba(255,255,255,1) 100%)";
     }
 }
 
 // Funciones para actualizar la lista de balizas
 function actualizarListaBalizas() {
-    const lista = document.getElementById('balizas-seleccionadas');
-    lista.innerHTML = ''; // Limpia la lista antes de actualizar
-    balizasSeleccionadas.forEach(baliza => {
+    const lista = document.getElementById("balizas-seleccionadas");
+    lista.innerHTML = ""; // Limpia la lista antes de actualizar
+    balizasSeleccionadas.forEach((baliza) => {
         getDatosHoyBaliza(baliza).then(() => {
-            const card = document.createElement('div');
-            card.className = 'baliza-card'; // Clases para diseño responsivo
+            const card = document.createElement("div");
+            card.className = "baliza-card"; // Clases para diseño responsivo
             card.id = baliza.nombre;
             card.style.background = colorCielo(baliza.datosHoy.cielo);
             card.innerHTML = `
@@ -98,21 +102,23 @@ function actualizarListaBalizas() {
     });
 }
 
-
 // Eliminar baliza de la lista de seleccionadas
 function eliminarBaliza(nombre) {
-    balizasSeleccionadas.forEach(baliza => {
+    balizasSeleccionadas.forEach((baliza) => {
         if (baliza.nombre === nombre) {
             balizasSeleccionadas.delete(baliza);
             const marker = markers.get(baliza.nombre);
             if (marker) {
-                marker.setIcon(L.icon({
-                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-                    iconSize: [25, 41],
-                    iconAnchor: [12, 41],
-                    popupAnchor: [1, -34],
-                    shadowSize: [41, 41]
-                }));
+                marker.setIcon(
+                    L.icon({
+                        iconUrl:
+                            "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41],
+                    })
+                );
             }
         }
     });
@@ -120,48 +126,55 @@ function eliminarBaliza(nombre) {
 }
 
 // Cargar balizas desde la API
-const url = 'http://127.0.0.1:85/balizas';
+const url = "http://127.0.0.1:85/balizas";
 fetch(url)
-    .then(response => response.json())
-    .then(balizas => {
-        balizas.forEach(baliza => {
+    .then((response) => response.json())
+    .then((balizas) => {
+        balizas.forEach((baliza) => {
             const marker = L.marker([baliza.latitud, baliza.longitud], {
                 icon: L.icon({
-                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                    iconUrl:
+                        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
                     iconSize: [25, 41],
                     iconAnchor: [12, 41],
                     popupAnchor: [1, -34],
-                    shadowSize: [41, 41]
-                })
+                    shadowSize: [41, 41],
+                }),
             }).addTo(map);
 
             markers.set(baliza.nombre, marker);
 
             marker.bindTooltip(`<strong>${baliza.nombre}</strong>`, {
                 permanent: false,
-                direction: 'top',
-                offset: [0, -40]
+                direction: "top",
+                offset: [0, -40],
             });
 
-            marker.on('click', () => {
+            marker.on("click", () => {
                 if (balizasSeleccionadas.has(baliza)) {
-                    marker.setIcon(L.icon({
-                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41],
-                        popupAnchor: [1, -34],
-                        shadowSize: [41, 41]
-                    }));
+                    marker.setIcon(
+                        L.icon({
+                            iconUrl:
+                                "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41],
+                        })
+                    );
                     balizasSeleccionadas.delete(baliza);
                 } else {
-                    marker.setIcon(L.icon({
-                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41],
-                        popupAnchor: [1, -34],
-                        shadowSize: [41, 41]
-                    }));
-                    if (!balizasSeleccionadas.has(baliza)){
+                    marker.setIcon(
+                        L.icon({
+                            iconUrl:
+                                "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41],
+                        })
+                    );
+                    if (!balizasSeleccionadas.has(baliza)) {
                         balizasSeleccionadas.add(baliza);
                     }
                 }
@@ -169,9 +182,9 @@ fetch(url)
             });
         });
     })
-    .catch(error => {
-        console.error('Error al cargar las balizas:', error);
-        document.getElementById('mapid').innerHTML = `
+    .catch((error) => {
+        console.error("Error al cargar las balizas:", error);
+        document.getElementById("mapid").innerHTML = `
             <div style="text-align: center; padding: 2rem;">
                 <p>Error al cargar las balizas. Por favor, intente más tarde.</p>
             </div>
@@ -179,13 +192,13 @@ fetch(url)
     });
 
 function getDatosBaliza(nombre) {
-    return fetch('http://127.0.0.1:85/datos/' + nombre);
-};
+    return fetch("http://127.0.0.1:85/datos/" + nombre);
+}
 
 function getDatosHoyBaliza(baliza) {
-    return fetch('http://127.0.0.1:85/datosHoy/' + baliza.nombre)
-        .then(response => response.json())
-        .then(data => {
+    return fetch("http://127.0.0.1:85/datosHoy/" + baliza.nombre)
+        .then((response) => response.json())
+        .then((data) => {
             // Añade los datos actuales a la baliza
             baliza.datosHoy = data[0];
 
@@ -201,71 +214,78 @@ function getDatosHoyBaliza(baliza) {
                 dia = "0" + dia;
             }
 
-            // Llamada a euksalmet para obtener la previsión meteorológica, el endpoint cambia según la baliza
+            // Llamada a euskalmet para obtener la previsión meteorológica, el endpoint cambia según la baliza
             nombreBaliza = baliza.nombre.toLowerCase();
             switch (nombreBaliza) {
                 case "irun":
                 case "hondarribia":
-                    zona = 'coast_zone';
+                    zona = "coast_zone";
                     break;
                 case "donostia":
                 case "errenteria":
-                    zona = 'donostialdea';
+                    zona = "donostialdea";
                     break;
                 case "bilbao":
-                    zona = 'great_bilbao';
+                    zona = "great_bilbao";
                     break;
                 case "gasteiz":
-                    zona = 'vitoria_gasteiz';
+                    zona = "vitoria_gasteiz";
                     break;
                 default:
-                    zona = 'basque_country';
+                    zona = "basque_country";
                     break;
             }
 
             const options = {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtZXQwMS5hcGlrZXkiLCJpc3MiOiJJRVMgUExBSUFVTkRJIEJISSBJUlVOIiwiZXhwIjoyMjM4MTMxMDAyLCJ2ZXJzaW9uIjoiMS4wLjAiLCJpYXQiOjE3MzM5ODgyMTAsImVtYWlsIjoiaWtjdG1AcGxhaWF1bmRpLm5ldCJ9.jUafbRj0bVB0-qXy3If_Xa8CAK3fja-Or7uRj7fzMFVT3HNVygv5ZaxBSxhYI2lKBz8prugwK8Dzt2a_Cr5L2X08STo1QhwfUsgKSnRrvgLj9-5k0oOOWev54EKJYQbXGXIRv7ThUd0UnmrIbkDjHPtYyigl0_q9Xjxz5NBNAathme8WbmblsjYx10Ig5FPVGxbozxvdX2um0BvefzUK5_MpCtem26u8uEfVYYnvRBWBviAG11woUrHLJIDuBifFbu8qKV9L25-pK231KkhUYGr-i_k3zul-ran0tsBg4P5Ezu0b1x_Q3RyuDCb6bO9ocbdL9ttKZkZG4gQfs8GfMw'
-                }
+                    Authorization:
+                        "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtZXQwMS5hcGlrZXkiLCJpc3MiOiJJRVMgUExBSUFVTkRJIEJISSBJUlVOIiwiZXhwIjoyMjM4MTMxMDAyLCJ2ZXJzaW9uIjoiMS4wLjAiLCJpYXQiOjE3MzM5ODgyMTAsImVtYWlsIjoiaWtjdG1AcGxhaWF1bmRpLm5ldCJ9.jUafbRj0bVB0-qXy3If_Xa8CAK3fja-Or7uRj7fzMFVT3HNVygv5ZaxBSxhYI2lKBz8prugwK8Dzt2a_Cr5L2X08STo1QhwfUsgKSnRrvgLj9-5k0oOOWev54EKJYQbXGXIRv7ThUd0UnmrIbkDjHPtYyigl0_q9Xjxz5NBNAathme8WbmblsjYx10Ig5FPVGxbozxvdX2um0BvefzUK5_MpCtem26u8uEfVYYnvRBWBviAG11woUrHLJIDuBifFbu8qKV9L25-pK231KkhUYGr-i_k3zul-ran0tsBg4P5Ezu0b1x_Q3RyuDCb6bO9ocbdL9ttKZkZG4gQfs8GfMw",
+                },
             };
 
             // Obtener la previsión meteorológica de la baliza mediante euskalmet
-            return fetch(`https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/${zona}/locations/${nombreBaliza}/forecast/at/${año}/${mes}/${dia}/for/${año}${mes}${dia}`, options)
-                .then(response => response.json())
-                .then(data => {
+            return fetch(
+                `https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/${zona}/locations/${nombreBaliza}/forecast/at/${año}/${mes}/${dia}/for/${año}${mes}${dia}`,
+                options
+            )
+                .then((response) => response.json())
+                .then((data) => {
                     baliza.forecast = data.forecastText.SPANISH;
                     console.log(baliza);
                 })
-                .catch(err => console.error(err));
+                .catch((err) => console.error(err));
         })
-        .catch(error => {
-            console.error('Error al obtener los datos de hoy para la baliza', baliza.nombre, error);
+        .catch((error) => {
+            console.error(
+                "Error al obtener los datos de hoy para la baliza",
+                baliza.nombre,
+                error
+            );
         });
-};
+}
 
-//Funcion para hacer un modal que al hacer hover en el header de la baliza muestre la previsión meteorológica
-
+// Funcion para hacer un modal que al hacer hover en el header de la baliza muestre la previsión meteorológica
 
 // Función para obtener el icono del parametro
 function iconoParametro(parametro, parametroValue) {
     switch (parametro) {
-        case 'temperatura':
+        case "temperatura":
             return `<div class="drag-param" id="${parametro}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thermometer"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>:
             ${parametroValue}ºC
             </div>`;
-        case 'humedad':
+        case "humedad":
             return `<div class="drag-param" id="${parametro}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-droplets"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg>:
             ${parametroValue}%
             </div>`;
-        case 'velocidad_viento':
+        case "velocidad_viento":
             return `<div class="drag-param" id="${parametro}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wind"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></svg>:
             ${parametroValue}km/h
             </div>`;
-        case 'probabilidad_precipitacion':
+        case "probabilidad_precipitacion":
             return `<div class="drag-param" id="${parametro}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-rain"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>:
             ${parametroValue}%
@@ -276,10 +296,10 @@ function iconoParametro(parametro, parametroValue) {
 }
 
 // Drag and drop
-$(document).ready(function() {
+$(document).ready(function () {
     $(".parameter").draggable({
         helper: "clone", // Clona el elemento arrastrado
-        revert: "invalid" // Devuelve el elemento si no se suelta en un contenedor válido
+        revert: "invalid", // Devuelve el elemento si no se suelta en un contenedor válido
     });
 
     $(".balizas-contenedor").on("mouseenter", ".baliza-card", function () {
@@ -287,10 +307,12 @@ $(document).ready(function() {
             accept: ".parameter", // Solo acepta elementos con clase 'parameter'
             drop: function (event, ui) {
                 // Cojo el id del parámetro
-                const parametro = ui.draggable.attr('id');
+                const parametro = ui.draggable.attr("id");
 
                 // Consigue la baliza a la que pertenece la tarjeta de la lista balizasSeleccionadas
-                const baliza = Array.from(balizasSeleccionadas).find(baliza => baliza.nombre === $(this).attr('id'));
+                const baliza = Array.from(balizasSeleccionadas).find(
+                    (baliza) => baliza.nombre === $(this).attr("id")
+                );
 
                 // Consigue el valor del parámetro de la baliza
                 const parametroValue = baliza.datosHoy[parametro];
@@ -302,7 +324,7 @@ $(document).ready(function() {
                 if (!card.find(`#${parametro}`).length) {
                     card.append(`${divParametro}`);
                 }
-            }
+            },
         });
     });
     // Hover en parámetros añadidos con drag and drop
@@ -325,13 +347,15 @@ $(document).ready(function() {
         $param.find(".").remove();
     });
 
+
+
     // Obtener el modal y el botón de cierre
-    const modal = $('#forecastModal');
-    const closeBtn = $('.close');
+    const modal = $("#forecastModal");
+    const closeBtn = $(".close");
 
     // Función para abrir el modal con la previsión meteorológica
     function abrirModal(forecast) {
-        $('#forecastText').text(forecast); // Mostrar la previsión
+        $("#forecastText").text(forecast); // Mostrar la previsión
         modal.show(); // Mostrar el modal
     }
 
@@ -341,34 +365,138 @@ $(document).ready(function() {
     }
 
     // Evento para cerrar el modal al hacer clic en la "X"
-    closeBtn.on('click', cerrarModal);
+    closeBtn.on("click", cerrarModal);
 
     // Evento para cerrar el modal al hacer clic fuera del contenido
-    $(window).on('click', (event) => {
+    $(window).on("click", (event) => {
         if ($(event.target).is(modal)) {
             cerrarModal();
         }
     });
 
     // Evento para abrir el modal al hacer clic en el encabezado de la baliza
-    $(document).on('click', '.baliza-header', function() {
-        const balizaCard = $(this).closest('.baliza-card');
-        const balizaNombre = balizaCard.attr('id');
-        const baliza = Array.from(balizasSeleccionadas).find(b => b.nombre === balizaNombre);
+    $(document).on("click", ".baliza-header", function () {
+        const balizaCard = $(this).closest(".baliza-card");
+        const balizaNombre = balizaCard.attr("id");
+        const baliza = Array.from(balizasSeleccionadas).find(
+            (b) => b.nombre === balizaNombre
+        );
 
         if (baliza && baliza.forecast) {
             abrirModal(baliza.forecast);
         } else {
-            abrirModal('No hay previsión disponible para esta baliza.');
+            abrirModal("No hay previsión disponible para esta baliza.");
         }
     });
 
     // Cambiar el cursor al pasar sobre el encabezado de la baliza
-    $(document).on('mouseover', '.baliza-header', function() {
-        $(this).css('cursor', 'pointer');
+    $(document).on("mouseover", ".baliza-header", function () {
+        $(this).css("cursor", "pointer");
     });
 
-    $(document).on('mouseout', '.baliza-header', function() {
-        $(this).css('cursor', 'default');
+    $(document).on("mouseout", ".baliza-header", function () {
+        $(this).css("cursor", "default");
+    });
+
+    let currentBalizaIndex = 0;
+    let myChart = null;
+
+    //Coge el boton del html de actualizar gráfico
+    document.getElementById('btn-actualizar').addEventListener('click', actualizarGrafico);
+
+    // Función para inicializar o actualizar el gráfico
+    function actualizarGrafico() {
+        if (!myChart) {
+            myChart = echarts.init(document.getElementById('grafico-datos'));
+            console.log('Inicializado gráfico');
+        }
+
+        if (balizasSeleccionadas.size === 0) {
+            myChart.clear();
+            console.log('No hay balizas');
+            return;
+        }
+
+        const balizaActual = Array.from(balizasSeleccionadas)[currentBalizaIndex];
+        console.log(balizasSeleccionadas);
+        console.log('Baliza actual:', balizaActual);
+        document.getElementById('currentBalizaNombre').textContent = balizaActual.nombre;
+
+        // Mostrar el spinner de carga
+        document.getElementById('loading-spinner').style.display = 'block';
+
+        getDatosBaliza(balizaActual.nombre)
+            .then(response => response.json())
+            .then(datosHistoricos => {
+                console.log('los datos comienzan', datosHistoricos);
+                const option = {
+                    title: {
+                        text: `Datos históricos - ${balizaActual.nombre}`,
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['Temperatura', 'Humedad', 'Velocidad Viento', 'Probabilidad_precipitacion'],
+                        top: 30
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: datosHistoricos.map(d => new Date(d.created_at).toLocaleDateString())
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: 'Temperatura',
+                            type: 'line',
+                            data: datosHistoricos.map(d => d.temperatura)
+                        },
+                        {
+                            name: 'Humedad',
+                            type: 'line',
+                            data: datosHistoricos.map(d => d.humedad)
+                        },
+                        {
+                            name: 'Velocidad Viento',
+                            type: 'line',
+                            data: datosHistoricos.map(d => d.velocidad_viento)
+                        },
+                        {
+                            name: 'Probabilidad_precipitacion',
+                            type: 'line',
+                            data: datosHistoricos.map(d => d.probabilidad_precipitacion)
+                        }
+
+                    ]
+                };
+
+                myChart.setOption(option, true);
+            })
+            .finally(() => {
+                // Ocultar el spinner de carga
+                document.getElementById('loading-spinner').style.display = 'none';
+            });
+    }
+
+    // Eventos para los botones de navegación
+    document.getElementById('prevBaliza').addEventListener('click', () => {
+        if (balizasSeleccionadas.size === 0) return;
+        currentBalizaIndex = (currentBalizaIndex - 1 + balizasSeleccionadas.size) % balizasSeleccionadas.size;
+        actualizarGrafico();
+    });
+
+    document.getElementById('nextBaliza').addEventListener('click', () => {
+        if (balizasSeleccionadas.size === 0) return;
+        currentBalizaIndex = (currentBalizaIndex + 1) % balizasSeleccionadas.size;
+        actualizarGrafico();
     });
 });
