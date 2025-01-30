@@ -258,32 +258,59 @@ document
     .getElementById("btn-actualizar")
     .addEventListener("click", actualizarGrafico);
 
-// Función para inicializar o actualizar el gráfico
+// Función para validar fechas y habilitar/deshabilitar botón
+function validarFechas() {
+    const fechaInicio = document.getElementById('fecha-inicio').value;
+    const fechaFinal = document.getElementById('fecha-final').value;
+    const btnActualizar = document.getElementById('btn-actualizar');
+
+    if (fechaInicio && fechaFinal) {
+        const startDate = new Date(fechaInicio);
+        const endDate = new Date(fechaFinal);
+        btnActualizar.disabled = startDate > endDate;
+    } else {
+        btnActualizar.disabled = true;
+    }
+}
+
+// Event listeners para los date inputs
+document.getElementById('fecha-inicio').addEventListener('change', validarFechas);
+document.getElementById('fecha-final').addEventListener('change', validarFechas);
+
+// Función actualizada para obtener datos con filtro de fechas
 function actualizarGrafico() {
     const spinner = document.getElementById('loading-spinner');
     spinner.style.display = 'flex';
 
     if (!myChart) {
         myChart = echarts.init(document.getElementById("grafico-datos"));
-        console.log("Inicializado gráfico");
     }
 
     if (balizasSeleccionadas.size === 0) {
         myChart.clear();
-        console.log("No hay balizas");
+        spinner.style.display = 'none';
         return;
     }
 
     const balizaActual = Array.from(balizasSeleccionadas)[currentBalizaIndex];
-    console.log(balizasSeleccionadas);
-    console.log("Baliza actual:", balizaActual);
-    document.getElementById("currentBalizaNombre").textContent =
-        balizaActual.nombre;
+    document.getElementById("currentBalizaNombre").textContent = balizaActual.nombre;
 
-    getDatosBaliza(balizaActual.nombre)
-        .then((response) => response.json())
-        .then((datosHistoricos) => {
-            console.log("los datos comienzan", datosHistoricos);
+    // Obtener valores de fecha
+    const fechaInicio = document.getElementById('fecha-inicio').value;
+    const fechaFinal = document.getElementById('fecha-final').value;
+
+    // Construir URL con parámetros de fecha
+    let url = `http://127.0.0.1:85/datos/${balizaActual.nombre}`;
+    if (fechaInicio && fechaFinal) {
+        url += `?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFinal}`;
+    }
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('Error en la respuesta de la API');
+            return response.json();
+        })
+        .then(datosHistoricos => {
             const option = {
                 title: {
                     text: `Datos históricos - ${balizaActual.nombre}`,
@@ -309,9 +336,7 @@ function actualizarGrafico() {
                 },
                 xAxis: {
                     type: "category",
-                    data: datosHistoricos.map((d) =>
-                        new Date(d.created_at).toLocaleDateString()
-                    ),
+                    data: datosHistoricos.map(d => new Date(d.timestamp).toLocaleDateString()),
                 },
                 yAxis: {
                     type: "value",
@@ -320,32 +345,33 @@ function actualizarGrafico() {
                     {
                         name: "Temperatura",
                         type: "line",
-                        data: datosHistoricos.map((d) => d.temperatura),
+                        data: datosHistoricos.map(d => d.temperatura),
                     },
                     {
                         name: "Humedad",
                         type: "line",
-                        data: datosHistoricos.map((d) => d.humedad),
+                        data: datosHistoricos.map(d => d.humedad),
                     },
                     {
                         name: "Velocidad Viento",
                         type: "line",
-                        data: datosHistoricos.map((d) => d.velocidad_viento),
+                        data: datosHistoricos.map(d => d.velocidad_viento),
                     },
                     {
                         name: "Probabilidad_precipitacion",
                         type: "line",
-                        data: datosHistoricos.map(
-                            (d) => d.probabilidad_precipitacion
-                        ),
+                        data: datosHistoricos.map(d => d.probabilidad_precipitacion),
                     },
                 ],
             };
 
             myChart.setOption(option, true);
         })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar datos. Verifica las fechas seleccionadas.');
+        })
         .finally(() => {
-            // Ocultar el spinner de carga
             spinner.style.display = 'none';
         });
 }
