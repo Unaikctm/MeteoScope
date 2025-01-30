@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\CSRF;
 class BalizaController extends Controller
 {
     /**
-     * Obtener todas las balizas.
-     *
-     * @return JsonResponse
+     * @OA\Get(
+     *    path="/balizas",
+     *    tags={"Balizas"},
+     *    summary="Obtener todas las balizas",
+     *    description="Obtener todas las balizas",
+     *    @OA\Response(response="200", description="Balizas obtenidas"),
+     * )
      */
     public function balizas(): JsonResponse
     {
@@ -21,10 +25,23 @@ class BalizaController extends Controller
     }
 
     /**
-     * Obtener una baliza por su ID.
-     *
-     * @param int $id
-     * @return JsonResponse
+     * @OA\Get(
+     *    path="/baliza/{id}",
+     *    tags={"Balizas"},
+     *    summary="Obtener una baliza",
+     *    description="Obtener una baliza",
+     *    @OA\Parameter(
+     *        name="id",
+     *        in="path",
+     *        description="ID de la baliza",
+     *        required=true,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *    ),
+     *    @OA\Response(response="200", description="Baliza obtenida"),
+     *    @OA\Response(response="404", description="Baliza no encontrada"),
+     * )
      */
     public function baliza(int $id): JsonResponse
     {
@@ -38,11 +55,31 @@ class BalizaController extends Controller
     }
 
     /**
-     * Actualizar una baliza existente.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return JsonResponse
+     * @OA\Put(
+     *    path="/baliza/{id}",
+     *    tags={"Balizas"},
+     *    summary="Actualizar una baliza",
+     *    description="Actualizar una baliza",
+     *    @OA\Parameter(
+     *        name="id",
+     *        in="path",
+     *        description="ID de la baliza",
+     *        required=true,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *    ),
+     *    @OA\RequestBody(
+     *        required=true,
+     *        @OA\JsonContent(
+     *            @OA\Property(property="nombre", type="string"),
+     *            @OA\Property(property="latitud", type="number"),
+     *            @OA\Property(property="longitud", type="number"),
+     *        )
+     *    ),
+     *    @OA\Response(response="200", description="Baliza actualizada"),
+     *    @OA\Response(response="404", description="Baliza no encontrada"),
+     * )
      */
     public function actualizarBaliza(Request $request, int $id): JsonResponse
     {
@@ -64,10 +101,21 @@ class BalizaController extends Controller
     }
 
     /**
-     * Crear una nueva baliza.
-     *
-     * @param Request $request
-     * @return JsonResponse
+     * @OA\Post(
+     *    path="/baliza",
+     *    tags={"Balizas"},
+     *    summary="Crear una baliza",
+     *    description="Crear una baliza",
+     *    @OA\RequestBody(
+     *        required=true,
+     *        @OA\JsonContent(
+     *            @OA\Property(property="nombre", type="string"),
+     *            @OA\Property(property="latitud", type="number"),
+     *            @OA\Property(property="longitud", type="number"),
+     *        )
+     *    ),
+     *    @OA\Response(response="201", description="Baliza creada"),
+     * )
      */
     public function crearBaliza(Request $request): JsonResponse
     {
@@ -83,10 +131,23 @@ class BalizaController extends Controller
     }
 
     /**
-     * Eliminar una baliza.
-     *
-     * @param int $id
-     * @return JsonResponse
+     * @OA\Delete(
+     *    path="/baliza/{id}",
+     *    tags={"Balizas"},
+     *    summary="Eliminar una baliza",
+     *    description="Eliminar una baliza",
+     *    @OA\Parameter(
+     *        name="id",
+     *        in="path",
+     *        description="ID de la baliza",
+     *        required=true,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *    ),
+     *    @OA\Response(response="200", description="Baliza eliminada"),
+     *    @OA\Response(response="404", description="Baliza no encontrada"),
+     * )
      */
     public function eliminarBaliza(int $id): JsonResponse
     {

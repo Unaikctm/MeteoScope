@@ -1,0 +1,189 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de predicciones meteorológicas",
+        "description": "API para consultar predicciones meteorológicas de diferentes ciudades.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "Servidor de producción"
+        },
+        {
+            "url": "/api-staging",
+            "description": "Servidor de pruebas"
+        },
+        {
+            "url": "/api-local",
+            "description": "Servidor local"
+        },
+        {
+            "url": "/api-dev",
+            "description": "Servidor de desarrollo"
+        }
+    ],
+    "paths": {
+        "/balizas": {
+            "get": {
+                "tags": [
+                    "Balizas"
+                ],
+                "summary": "Obtener todas las balizas",
+                "description": "Obtener todas las balizas",
+                "operationId": "0c2139020de922b4fca5d9a930c2d235",
+                "responses": {
+                    "200": {
+                        "description": "Balizas obtenidas"
+                    }
+                }
+            }
+        },
+        "/baliza/{id}": {
+            "get": {
+                "tags": [
+                    "Balizas"
+                ],
+                "summary": "Obtener una baliza",
+                "description": "Obtener una baliza",
+                "operationId": "2d88b2606c56d5e2815e916d917c599d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la baliza",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Baliza obtenida"
+                    },
+                    "404": {
+                        "description": "Baliza no encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Balizas"
+                ],
+                "summary": "Actualizar una baliza",
+                "description": "Actualizar una baliza",
+                "operationId": "83b9df75db55a4e2eac3340ac3752d56",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la baliza",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string"
+                                    },
+                                    "latitud": {
+                                        "type": "number"
+                                    },
+                                    "longitud": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Baliza actualizada"
+                    },
+                    "404": {
+                        "description": "Baliza no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Balizas"
+                ],
+                "summary": "Eliminar una baliza",
+                "description": "Eliminar una baliza",
+                "operationId": "e853be1a4cdc5dc10be1e30fc4b95bd0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la baliza",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Baliza eliminada"
+                    },
+                    "404": {
+                        "description": "Baliza no encontrada"
+                    }
+                }
+            }
+        },
+        "/baliza": {
+            "post": {
+                "tags": [
+                    "Balizas"
+                ],
+                "summary": "Crear una baliza",
+                "description": "Crear una baliza",
+                "operationId": "0085582305466325535fd1456b921c61",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string"
+                                    },
+                                    "latitud": {
+                                        "type": "number"
+                                    },
+                                    "longitud": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Baliza creada"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Balizas",
+            "description": "Balizas"
+        }
+    ]
+}
