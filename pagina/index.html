@@ -59,26 +59,34 @@
         </div>
         <div id="tab-grafico" class="contenido">
             <div id="grafico">
-                <div id="grafico-controls">
-                    <button id="prevBaliza" class="nav-btn">← Anterior</button>
-                    <span id="currentBalizaNombre">Selecciona fechas y balizas</span>
-                    <button id="nextBaliza" class="nav-btn">Siguiente →</button>
-                </div>
+                <!-- Columna izquierda -->
                 <div id="date-selector">
-                    <input type="date" id="fecha-inicio" placeholder="Fecha de inicio">
-                    <input type="date" id="fecha-final" placeholder="Fecha de fin">
+                    <h3>Seleccionar fechas</h3>
+                    <input type="date" id="fecha-inicio">
+                    <input type="date" id="fecha-final">
                     <button id="btn-actualizar">Actualizar Gráfico</button>
                 </div>
-                <div id="loading-spinner">
-                    <img src="imagenes/Spinner.svg" alt="Cargando...">
+
+                <!-- Columna derecha -->
+                <div class="right-panel">
+                    <div id="grafico-controls">
+                        <button id="prevBaliza" class="nav-btn">← Anterior</button>
+                        <span id="currentBalizaNombre">Selecciona fechas y balizas</span>
+                        <button id="nextBaliza" class="nav-btn">Siguiente →</button>
+                    </div>
+
+                    <div id="loading-spinner">
+                        <img src="imagenes/Spinner.svg" alt="Cargando...">
+                    </div>
+
+                    <div id="grafico-datos"></div>
                 </div>
-                <div id="grafico-datos"></div>
             </div>
         </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://fastly.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
-    <script src="script.js"></script>
+    <script type="module" src="scripts/main.js"></script>
 </body>
 </html>

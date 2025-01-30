@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Baliza;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\CSRF;
 
 class BalizaController extends Controller
 {
