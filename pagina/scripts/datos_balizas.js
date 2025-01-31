@@ -60,6 +60,7 @@ export function getDatosHoyBaliza(baliza) {
                 .then((response) => response.json())
                 .then((data) => {
                     baliza.forecast = data.forecastText.SPANISH;
+                    console.log(baliza);
                 })
                 .catch((err) => console.error(err));
         })

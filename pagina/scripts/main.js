@@ -63,12 +63,15 @@ function actualizarListaBalizas() {
                     <div>${baliza.datosHoy.cielo}</div>
                 </div>
                 <div id="fecha_dato">
-                    Recogido el: ${baliza.created_at}
+                    Recogido el: ${baliza.datosHoy.timestamp}
                 </div>
             `;
             lista.appendChild(card);
         });
     });
+
+    // Guardar balizas seleccionadas en localStorage
+    localStorage.setItem('balizasSeleccionadas', JSON.stringify(Array.from(balizasSeleccionadas)));
 }
 
 // Cargar balizas desde la API
@@ -127,6 +130,28 @@ fetch(url)
                 actualizarListaBalizas();
             });
         });
+
+        // Restaurar balizas seleccionadas desde localStorage
+        const balizasGuardadas = JSON.parse(localStorage.getItem('balizasSeleccionadas'));
+        if (balizasGuardadas) {
+            balizasGuardadas.forEach((balizaGuardada) => {
+                const baliza = balizas.find(b => b.nombre === balizaGuardada.nombre);
+                if (baliza) {
+                    balizasSeleccionadas.add(baliza);
+                    markers.get(baliza.nombre).setIcon(
+                        L.icon({
+                            iconUrl:
+                                "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41],
+                        })
+                    );
+                }
+            });
+            actualizarListaBalizas();
+        }
     })
     .catch((error) => {
         console.error("Error al cargar las balizas:", error);
@@ -158,6 +183,7 @@ $(document).ready(function () {
                 const baliza = Array.from(balizasSeleccionadas).find(
                     (baliza) => baliza.nombre === $(this).attr("id")
                 );
+                console.log(baliza);
 
                 // Consigue el valor del parámetro de la baliza
                 const parametroValue = baliza.datosHoy[parametro];

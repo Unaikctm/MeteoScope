@@ -11,16 +11,7 @@
             "description": "Servidor de producción"
         },
         {
-            "url": "/api-staging",
-            "description": "Servidor de pruebas"
-        },
-        {
-            "url": "/api-local",
-            "description": "Servidor local"
-        },
-        {
-            "url": "/api-dev",
-            "description": "Servidor de desarrollo"
+            "url": "http://localhost:85"
         }
     ],
     "paths": {
@@ -178,12 +169,94 @@
                     }
                 }
             }
+        },
+        "/datos/{ciudad}": {
+            "get": {
+                "tags": [
+                    "Datos"
+                ],
+                "summary": "Obtener datos de predicción para una ciudad",
+                "description": "Obtener datos de predicción para una ciudad en un rango de fechas opcional",
+                "operationId": "b6c287ca289f1094fc18542c7a90f871",
+                "parameters": [
+                    {
+                        "name": "ciudad",
+                        "in": "path",
+                        "description": "Nombre de la ciudad",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fecha_inicio",
+                        "in": "query",
+                        "description": "Fecha de inicio del rango (opcional)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "fecha_fin",
+                        "in": "query",
+                        "description": "Fecha de fin del rango (opcional)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Datos de predicción obtenidos"
+                    },
+                    "404": {
+                        "description": "Ciudad no encontrada"
+                    }
+                }
+            }
+        },
+        "/datosHoy/{ciudad}": {
+            "get": {
+                "tags": [
+                    "Datos"
+                ],
+                "summary": "Obtener datos de predicción de hoy para una ciudad",
+                "description": "Obtener los datos de predicción más recientes para una ciudad",
+                "operationId": "2bb5d93eb68394765f96e6ac08a3a70a",
+                "parameters": [
+                    {
+                        "name": "ciudad",
+                        "in": "path",
+                        "description": "Nombre de la ciudad",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Datos de predicción obtenidos"
+                    },
+                    "404": {
+                        "description": "Ciudad no encontrada"
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
             "name": "Balizas",
             "description": "Balizas"
+        },
+        {
+            "name": "Datos",
+            "description": "Datos"
         }
     ]
 }
