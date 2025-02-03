@@ -48,6 +48,14 @@ let markers = new Map();
 function actualizarListaBalizas() {
     const lista = document.getElementById("balizas-seleccionadas");
     lista.innerHTML = ""; // Limpia la lista antes de actualizar
+
+    if (balizasSeleccionadas.size === 0) {
+        const mensaje = document.createElement("p");
+        mensaje.textContent = "No hay balizas seleccionadas.";
+        lista.appendChild(mensaje);
+        return;
+    }
+
     balizasSeleccionadas.forEach((baliza) => {
         getDatosHoyBaliza(baliza).then(() => {
             const card = document.createElement("div");
@@ -288,6 +296,7 @@ document
 function validarFechas() {
     const fechaInicio = document.getElementById('fecha-inicio').value;
     const fechaFinal = document.getElementById('fecha-final').value;
+
     const btnActualizar = document.getElementById('btn-actualizar');
 
     if (fechaInicio && fechaFinal) {
