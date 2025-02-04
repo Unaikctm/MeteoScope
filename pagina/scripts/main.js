@@ -74,6 +74,15 @@ function actualizarListaBalizas() {
                     Recogido el: ${baliza.datosHoy.timestamp}
                 </div>
             `;
+
+            // Añadir parámetros guardados en localStorage
+            const parametrosGuardados = JSON.parse(localStorage.getItem(`parametros_${baliza.nombre}`)) || [];
+            parametrosGuardados.forEach(parametro => {
+                const parametroValue = baliza.datosHoy[parametro];
+                const divParametro = iconoParametro(parametro, parametroValue);
+                card.querySelector('.baliza-content').innerHTML += divParametro;
+            });
+
             lista.appendChild(card);
         });
     });
@@ -120,6 +129,7 @@ fetch(url)
                         })
                     );
                     balizasSeleccionadas.delete(baliza);
+                    localStorage.removeItem(`parametros_${baliza.nombre}`);
                 } else {
                     marker.setIcon(
                         L.icon({
@@ -202,6 +212,11 @@ $(document).ready(function () {
                 // Verifica si el parámetro ya está visible, si no, no se añade
                 if (!card.find(`#${parametro}`).length) {
                     card.append(`${divParametro}`);
+
+                    // Guardar el parámetro en localStorage
+                    let parametrosGuardados = JSON.parse(localStorage.getItem(`parametros_${baliza.nombre}`)) || [];
+                    parametrosGuardados.push(parametro);
+                    localStorage.setItem(`parametros_${baliza.nombre}`, JSON.stringify(parametrosGuardados));
                 }
             },
         });
@@ -216,6 +231,14 @@ $(document).ready(function () {
 
             // Listener para el botón de eliminación
             $param.find(".x").on("click", function () {
+                const balizaNombre = $param.closest('.baliza-card').attr('id');
+                const parametro = $param.attr('id');
+
+                // Eliminar el parámetro del localStorage
+                let parametrosGuardados = JSON.parse(localStorage.getItem(`parametros_${balizaNombre}`)) || [];
+                parametrosGuardados = parametrosGuardados.filter(p => p !== parametro);
+                localStorage.setItem(`parametros_${balizaNombre}`, JSON.stringify(parametrosGuardados));
+
                 $param.remove(); // Eliminar el parámetro del DOM
             });
         }
@@ -225,203 +248,4 @@ $(document).ready(function () {
         const $param = $(this);
         $param.find(".x").remove();
     });
-});
-
-// -------------------------------------------------------------------------------------------------------------------------------------- //
-// --------------------------------------------------------------- MODAL ---------------------------------------------------------------- //
-// -------------------------------------------------------------------------------------------------------------------------------------- //
-
-// Obtener el modal y el botón de cierre
-const modal = $("#forecastModal");
-const closeBtn = $(".close");
-
-// Función para abrir el modal con la previsión meteorológica
-function abrirModal(forecast) {
-    $("#forecastText").text(forecast); // Mostrar la previsión
-    modal.show(); // Mostrar el modal
-}
-
-// Función para cerrar el modal
-function cerrarModal() {
-    modal.hide(); // Ocultar el modal
-}
-
-// Evento para cerrar el modal al hacer clic en la "X"
-closeBtn.on("click", cerrarModal);
-
-// Evento para cerrar el modal al hacer clic fuera del contenido
-$(window).on("click", (event) => {
-    if ($(event.target).is(modal)) {
-        cerrarModal();
-    }
-});
-
-// Evento para abrir el modal al hacer clic en el encabezado de la baliza
-$(document).on("click", ".baliza-header", function () {
-    const balizaCard = $(this).closest(".baliza-card");
-    const balizaNombre = balizaCard.attr("id");
-    const baliza = Array.from(balizasSeleccionadas).find(
-        (b) => b.nombre === balizaNombre
-    );
-
-    if (baliza && baliza.forecast) {
-        abrirModal(baliza.forecast);
-    } else {
-        abrirModal("No hay previsión disponible para esta baliza.");
-    }
-});
-
-// Cambiar el cursor al pasar sobre el encabezado de la baliza
-$(document).on("mouseover", ".baliza-header", function () {
-    $(this).css("cursor", "pointer");
-});
-
-$(document).on("mouseout", ".baliza-header", function () {
-    $(this).css("cursor", "default");
-});
-
-// -------------------------------------------------------------------------------------------------------------------------------------- //
-// -------------------------------------------------------- GRAFICO EN ECHARTS ---------------------------------------------------------- //
-// -------------------------------------------------------------------------------------------------------------------------------------- //
-
-let currentBalizaIndex = 0;
-let myChart = null;
-
-//Coge el boton del html de actualizar gráfico
-document
-    .getElementById("btn-actualizar")
-    .addEventListener("click", actualizarGrafico);
-
-// Función para validar fechas y habilitar/deshabilitar botón
-function validarFechas() {
-    const fechaInicio = document.getElementById('fecha-inicio').value;
-    const fechaFinal = document.getElementById('fecha-final').value;
-
-    const btnActualizar = document.getElementById('btn-actualizar');
-
-    if (fechaInicio && fechaFinal) {
-        const startDate = new Date(fechaInicio);
-        const endDate = new Date(fechaFinal);
-        btnActualizar.disabled = startDate > endDate;
-    } else {
-        btnActualizar.disabled = true;
-    }
-}
-
-// Event listeners para los date inputs
-document.getElementById('fecha-inicio').addEventListener('change', validarFechas);
-document.getElementById('fecha-final').addEventListener('change', validarFechas);
-
-// Función actualizada para obtener datos con filtro de fechas
-function actualizarGrafico() {
-    const spinner = document.getElementById('loading-spinner');
-    spinner.style.display = 'flex';
-
-    if (!myChart) {
-        myChart = echarts.init(document.getElementById("grafico-datos"));
-    }
-
-    if (balizasSeleccionadas.size === 0) {
-        myChart.clear();
-        spinner.style.display = 'none';
-        return;
-    }
-
-    const balizaActual = Array.from(balizasSeleccionadas)[currentBalizaIndex];
-    document.getElementById("currentBalizaNombre").textContent = balizaActual.nombre;
-
-    // Obtener valores de fecha
-    const fechaInicio = document.getElementById('fecha-inicio').value;
-    const fechaFinal = document.getElementById('fecha-final').value;
-
-    // Construir URL con parámetros de fecha
-    let url = `http://127.0.0.1:85/datos/${balizaActual.nombre}`;
-    if (fechaInicio && fechaFinal) {
-        url += `?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFinal}`;
-    }
-
-    fetch(url)
-        .then(response => {
-            if (!response.ok) throw new Error('Error en la respuesta de la API');
-            return response.json();
-        })
-        .then(datosHistoricos => {
-            const option = {
-                title: {
-                    text: `Datos históricos - ${balizaActual.nombre}`,
-                    left: "center",
-                },
-                tooltip: {
-                    trigger: "axis",
-                },
-                legend: {
-                    data: [
-                        "Temperatura",
-                        "Humedad",
-                        "Velocidad Viento",
-                        "Probabilidad_precipitacion",
-                    ],
-                    top: 30,
-                },
-                grid: {
-                    left: "3%",
-                    right: "4%",
-                    bottom: "3%",
-                    containLabel: true,
-                },
-                xAxis: {
-                    type: "category",
-                    data: datosHistoricos.map(d => new Date(d.timestamp).toLocaleDateString()),
-                },
-                yAxis: {
-                    type: "value",
-                },
-                series: [
-                    {
-                        name: "Temperatura",
-                        type: "line",
-                        data: datosHistoricos.map(d => d.temperatura),
-                    },
-                    {
-                        name: "Humedad",
-                        type: "line",
-                        data: datosHistoricos.map(d => d.humedad),
-                    },
-                    {
-                        name: "Velocidad Viento",
-                        type: "line",
-                        data: datosHistoricos.map(d => d.velocidad_viento),
-                    },
-                    {
-                        name: "Probabilidad_precipitacion",
-                        type: "line",
-                        data: datosHistoricos.map(d => d.probabilidad_precipitacion),
-                    },
-                ],
-            };
-
-            myChart.setOption(option, true);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error al cargar datos. Verifica las fechas seleccionadas.');
-        })
-        .finally(() => {
-            spinner.style.display = 'none';
-        });
-}
-
-// Eventos para los botones de navegación
-document.getElementById("prevBaliza").addEventListener("click", () => {
-    if (balizasSeleccionadas.size === 0) return;
-    currentBalizaIndex =
-        (currentBalizaIndex - 1 + balizasSeleccionadas.size) %
-        balizasSeleccionadas.size;
-    actualizarGrafico();
-});
-
-document.getElementById("nextBaliza").addEventListener("click", () => {
-    if (balizasSeleccionadas.size === 0) return;
-    currentBalizaIndex = (currentBalizaIndex + 1) % balizasSeleccionadas.size;
-    actualizarGrafico();
 });
