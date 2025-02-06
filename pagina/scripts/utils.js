@@ -2,24 +2,23 @@
 export function iconoCielo(estado) {
     switch (estado) {
         case "cielo claro":
-            return `<img src="./imagenes/cielo_claro.png" alt="Sol" width="50" height="50">`;
+            return `<img src="./imagenes/sol.png" alt="Sol" width="50" height="50">`;
         case "algo de nubes":
-            return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-sun"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>`;
+            return `<img src="./imagenes/algo_de_nubes.png" alt="Nublado" width="50" height="50">`;
         case "nubes":
         case "muy nuboso":
         case "nubes dispersas":
-            return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloudy"><path d="M17.5 21H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><path d="M22 10a3 3 0 0 0-3-3h-2.207a5.502 5.502 0 0 0-10.702.5"/></svg>`;
+            return `<img src="./imagenes/muy_nuboso.png" alt="Nubes" width="50" height="50">`;
         case "niebla":
-            return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-fog"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 17H7"/><path d="M17 21H9"/></svg>`;
         case "bruma":
-            return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-drizzle"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M8 19v1"/><path d="M8 14v1"/><path d="M16 19v1"/><path d="M16 14v1"/><path d="M12 21v1"/><path d="M12 16v1"/></svg>`;
+            return `<img src="./imagenes/niebla.png" alt="Niebla" width="50" height="50">`;
         case "llovizna ligera":
         case "lluvia":
-            return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-rain-wind"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m9.2 22 3-7"/><path d="m9 13-3 7"/><path d="m17 13-3 7"/></svg>`;
+            return `<img src="./imagenes/lluvia.png" alt="Lluvia" width="50" height="50">`;
 
         default:
             // Por defecto, se muestra un icono de un prado
-            return `<img src="./imagenes/prado.png" alt="Prado" width="50" height="50">`;
+            return `<img src="./imagenes/else.png" alt="else" width="50" height="50">`;
     }
 }
 
@@ -35,9 +34,8 @@ export function colorCielo(estado) {
         case "nubes dispersas":
             return "linear-gradient(0deg, rgba(146,186,210,1) 0%, rgba(197,226,247,1) 100%)";
         case "niebla":
-            return "linear-gradient(0deg, rgba(169,169,169,1) 0%, rgba(211,211,211,1) 100%)";
         case "bruma":
-            return "linear-gradient(0deg, rgba(147,147,165,1) 0%, rgba(196,189,201,1) 100%)";
+            return "linear-gradient(0deg, rgba(169,169,169,1) 0%, rgba(211,211,211,1) 100%)";
         case "llovizna ligera":
         case "lluvia":
             return "linear-gradient(0deg, rgba(45,65,101,1) 0%, rgba(72,112,154,1) 100%)";

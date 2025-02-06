@@ -177,11 +177,6 @@ nav {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.baliza-card .parametros {
-    flex-grow: 1;
-    /* Permite que la sección de parámetros crezca sin afectar otras cartas */
-}
-
 #fecha_dato {
     position: absolute;
     bottom: 5px;
@@ -194,6 +189,13 @@ nav {
     border-radius: 6px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+.baliza-card .parametros {
+    flex-grow: 1;
+    /* Permite que la sección de parámetros crezca sin afectar otras cartas */
+}
+
+
 
 .drag-param {
     position: relative;
