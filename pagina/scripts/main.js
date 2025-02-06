@@ -298,9 +298,11 @@ $(document).on("mouseover", ".baliza-header", function () {
 $(document).on("mouseout", ".baliza-header", function () {
     $(this).css("cursor", "default");
 });
+
 // -------------------------------------------------------------------------------------------------------------------------------------- //
 // -------------------------------------------------------- GRAFICO EN ECHARTS ---------------------------------------------------------- //
 // -------------------------------------------------------------------------------------------------------------------------------------- //
+
 let currentBalizaIndex = 0;
 let myChart = null;
 //Coge el boton del html de actualizar gráfico
@@ -422,6 +424,7 @@ document.getElementById("prevBaliza").addEventListener("click", () => {
         balizasSeleccionadas.size;
     actualizarGrafico();
 });
+
 document.getElementById("nextBaliza").addEventListener("click", () => {
     if (balizasSeleccionadas.size === 0) return;
     currentBalizaIndex = (currentBalizaIndex + 1) % balizasSeleccionadas.size;

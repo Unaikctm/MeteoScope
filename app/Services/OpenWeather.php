@@ -43,7 +43,7 @@ class OpenWeather
             }
 
             return [
-                'timestamp' => Carbon::now(), // Fecha y hora actual
+                'timestamp' => Carbon::now()->addHour(), // Fecha y hora actual +1 hora
                 'temperatura' => $temp,
                 'cielo' => $description,
                 'humedad' => $humidity,

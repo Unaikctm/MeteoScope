@@ -169,12 +169,18 @@ nav {
     /* Añade esto para que el posicionamiento absoluto de #last_insert funcione correctamente */
     min-height: 150px;
     align-self: start;
+    text-align: center;
 }
 
 /* Hover para efecto visual */
 .baliza-card:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.baliza-card .parametros {
+    flex-grow: 1;
+    /* Permite que la sección de parámetros crezca sin afectar otras cartas */
 }
 
 #fecha_dato {
@@ -189,13 +195,6 @@ nav {
     border-radius: 6px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
-
-.baliza-card .parametros {
-    flex-grow: 1;
-    /* Permite que la sección de parámetros crezca sin afectar otras cartas */
-}
-
-
 
 .drag-param {
     position: relative;
