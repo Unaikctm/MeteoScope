@@ -1,3 +1,11 @@
+:root {
+    --color-primario: #2c3e50;
+    --color-secundario: #34495e;
+    --color-fondo: #f5f5f5;
+    --color-boton: #2980b9;
+    --color-boton-hover: #2471a3;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,14 +14,13 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
+    background-color: var(--color-fondo);
 }
 
 header {
-    background-color: #2c3e50;
+    background-color: var(--color-primario);
     color: white;
     padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -27,8 +34,34 @@ header {
     height: 32px;
 }
 
+.language-switcher {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.lang-btn {
+    padding: 0.3rem 0.6rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--color-secundario);
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.lang-btn.active {
+    background-color: var(--color-boton);
+}
+
+.lang-btn:hover {
+    transform: scale(1.25);
+}
+
 nav {
-    background-color: #34495e;
+    background-color: var(--color-secundario);
     padding: 1rem 2rem;
     display: flex;
     gap: 1rem;
@@ -50,7 +83,7 @@ nav {
 }
 
 .tab-boton.active {
-    background-color: #2980b9;
+    background-color: var(--color-boton);
 }
 
 .contenido {
@@ -73,7 +106,7 @@ nav {
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--color-fondo);
     border: 1px solid #ccc;
     border-radius: 10px;
     margin-bottom: 15px;
@@ -87,7 +120,7 @@ nav {
     padding: 25px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    background-color: #fff;
+    background-color: var(--color-fondo);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     cursor: grab;
     text-align: center;
@@ -108,7 +141,6 @@ nav {
 /* Estilos para el modal */
 .modal {
     display: none;
-    /* Oculto por defecto */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -117,11 +149,10 @@ nav {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Fondo oscuro */
 }
 
 .modal-contenido {
-    background-color: #fff;
+    background-color: var(--color-fondo);
     margin: 10% auto;
     padding: 20px;
     border-radius: 8px;
@@ -151,28 +182,22 @@ nav {
 .balizas-contenedor {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* Tres columnas por fila en pantallas grandes */
     gap: 16px;
-    /* Espacio entre tarjetas */
 }
 
 .baliza-card {
     width: 100%;
-    /* Ocupar el ancho total de su celda */
     border-radius: 12px;
     padding: 16px;
-    /* Espaciado interno */
     font-size: 1.2em;
     box-sizing: border-box;
-    transition: transform 0.2s, box-shadow 0.2s;
     position: relative;
-    /* Añade esto para que el posicionamiento absoluto de #last_insert funcione correctamente */
+    transition: transform 0.2s, box-shadow 0.2s;
     min-height: 150px;
     align-self: start;
     text-align: center;
 }
 
-/* Hover para efecto visual */
 .baliza-card:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -180,7 +205,6 @@ nav {
 
 .baliza-card .parametros {
     flex-grow: 1;
-    /* Permite que la sección de parámetros crezca sin afectar otras cartas */
 }
 
 #fecha_dato {
@@ -188,7 +212,7 @@ nav {
     bottom: 5px;
     right: 10px;
     font-size: 0.7em;
-    color: rgba(0, 0, 0, 0.6);
+    color: (0, 0, 0, 0.6);
     font-style: italic;
     background: rgba(255, 255, 255, 0.9);
     padding: 4px 8px;
@@ -206,7 +230,6 @@ nav {
 
 .drag-param:hover {
     transform: scale(1.02);
-    /* Ligero zoom al hacer hover */
 }
 
 .drag-param .x {
@@ -228,7 +251,6 @@ nav {
     transition: opacity 0.2s ease;
 }
 
-/* Mostrar X solo al hacer hover */
 .drag-param:hover .x {
     opacity: 1;
 }
@@ -236,7 +258,6 @@ nav {
 #grafico {
     display: grid;
     grid-template-columns: 1fr 3fr;
-    /* 25% - 75% */
     gap: 20px;
     padding: 20px;
 }
@@ -264,7 +285,7 @@ nav {
 
 #date-selector button {
     padding: 10px;
-    background: #2980b9;
+    background: var(--color-boton);
     color: white;
     border: none;
     border-radius: 4px;
@@ -273,7 +294,7 @@ nav {
 }
 
 #date-selector button:hover {
-    background: #2471a3;
+    background: var(--color-boton-hover);
 }
 
 .right-panel {
@@ -287,7 +308,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 15px;
-    background: #fff;
+    background: var(--color-fondo);
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -316,7 +337,7 @@ nav {
 
 .nav-btn {
     padding: 8px 16px;
-    background: #2980b9;
+    background: var(--color-boton);
     color: white;
     border: none;
     border-radius: 4px;
@@ -325,7 +346,7 @@ nav {
 }
 
 .nav-btn:hover {
-    background: #2471a3;
+    background: var(--color-boton-hover);
 }
 
 #currentBalizaNombre {
@@ -345,7 +366,7 @@ nav {
     opacity: 0.8;
 }
 
-#grafico-controls span{
+#grafico-controls span {
     text-align: center;
 }
 
@@ -363,7 +384,6 @@ nav {
     .parameter {
         flex-basis: 100%;
     }
-    /* Ajuste de las balizas */
     .balizas-contenedor {
         grid-template-columns: 1fr; /* Una columna por fila */
     }
@@ -373,7 +393,6 @@ nav {
         max-width: calc(50% - 16px);
     }
 
-    /* Estilos para el tab de gráfico */
     #grafico {
         display: flex;
         flex-direction: column;
@@ -414,7 +433,7 @@ nav {
         margin: 0 auto;
         text-align: center;
         padding: 10px;
-        background: #2980b9;
+        background: var(--color-boton);
         color: white;
         border: none;
         border-radius: 4px;
@@ -423,7 +442,7 @@ nav {
     }
 
     #date-selector button:hover:not(:disabled) {
-        background: #2471a3;
+        background: var(--color-boton-hover);
     }
 
     #grafico-datos {
@@ -446,7 +465,7 @@ nav {
 
     #grafico-controls .nav-btn {
         padding: 4px 8px;
-        background: #2980b9;
+        background: var(--color-boton);
         color: white;
         border: none;
         border-radius: 4px;
@@ -455,7 +474,7 @@ nav {
     }
 
     #grafico-controls .nav-btn:hover {
-        background: #2471a3;
+        background: var(--color-boton-hover);
     }
 }
 
@@ -465,4 +484,3 @@ nav {
         max-width: 100%;
     }
 }
-

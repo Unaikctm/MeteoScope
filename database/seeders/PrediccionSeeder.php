@@ -14,6 +14,6 @@ class PrediccionSeeder extends Seeder
      */
     public function run(): void
     {
-        Prediccion::factory()->count(15408)->create();
+        Prediccion::factory()->count(17608)->create();
     }
 }

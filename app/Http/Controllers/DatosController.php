@@ -63,6 +63,10 @@ class DatosController extends Controller
         if ($request->has('fecha_inicio') && $request->has('fecha_fin')) {
             $fecha_inicio = $request->query('fecha_inicio');
             $fecha_fin = $request->query('fecha_fin');
+
+            // Incrementar fecha_fin en un día para incluir el último día
+            $fecha_fin = date('Y-m-d', strtotime($fecha_fin . ' +1 day'));
+
             $query->whereBetween('timestamp', [$fecha_inicio, $fecha_fin]);
         }
 

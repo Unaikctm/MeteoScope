@@ -1,5 +1,32 @@
 import { iconoCielo, colorCielo, iconoParametro } from "./utils.js";
 import { getDatosBaliza, getDatosHoyBaliza } from "./datos_balizas.js";
+// Importar las funciones de internacionalización
+import { setLanguage, applyTranslations, translate } from './idioma.js';
+
+
+// -------------------------------------------------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------ GESTION DE IDIOMAS ------------------------------------------------------------- //
+// -------------------------------------------------------------------------------------------------------------------------------------- //
+
+// Al iniciar la aplicación
+document.addEventListener('DOMContentLoaded', () => {
+    applyTranslations();
+
+    // Manejadores para los botones de idioma
+    document.querySelectorAll('.lang-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            setLanguage(button.dataset.lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            actualizarListaBalizas();
+            actualizarGrafico();
+        });
+    });
+
+    // Establecer el botón activo según el idioma seleccionado
+    const selectedLanguage = localStorage.getItem('selectedLanguage') || 'es';
+    document.querySelector(`.lang-btn[data-lang="${selectedLanguage}"]`).classList.add('active');
+});
 
 // -------------------------------------------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------ GESTION DE PESTAÑAS ----------------------------------------------------------- //
@@ -44,6 +71,11 @@ let balizasSeleccionadas = new Set();
 // Map para asociar cada baliza con su marcador
 let markers = new Map();
 
+// Función para hacer mayuscula la primera letra de un string
+function mayuscula(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 // Funciones para actualizar la lista de balizas
 function actualizarListaBalizas() {
     const lista = document.getElementById("balizas-seleccionadas");
@@ -51,7 +83,7 @@ function actualizarListaBalizas() {
 
     if (balizasSeleccionadas.size === 0) {
         const mensaje = document.createElement("p");
-        mensaje.textContent = "No hay balizas seleccionadas.";
+        mensaje.textContent = translate("No hay balizas seleccionadas.");
         lista.appendChild(mensaje);
         return;
     }
@@ -73,10 +105,10 @@ function actualizarListaBalizas() {
                 </div>
                 <div class="baliza-content">
                     <div>${iconoCielo(baliza.datosHoy.cielo)}</div>
-                    <div>${baliza.datosHoy.cielo}</div>
+                    <div>${translate(mayuscula(baliza.datosHoy.cielo))}</div>
                 </div>
                 <div id="fecha_dato">
-                    Recogido el: ${baliza.datosHoy.timestamp}
+                    ${translate("Recogido el")}: ${baliza.datosHoy.timestamp}
                 </div>
             `;
 
@@ -354,57 +386,57 @@ function actualizarGrafico() {
         })
         .then(datosHistoricos => {
             const option = {
-                title: {
-                    text: `Datos históricos - ${balizaActual.nombre}`,
-                    left: "center",
-                },
-                tooltip: {
-                    trigger: "axis",
-                },
-                legend: {
-                    data: [
-                        "Temperatura",
-                        "Humedad",
-                        "Velocidad Viento",
-                        "Probabilidad_precipitacion",
-                    ],
-                    top: 30,
-                },
-                grid: {
-                    left: "3%",
-                    right: "4%",
-                    bottom: "3%",
-                    containLabel: true,
-                },
-                xAxis: {
-                    type: "category",
-                    data: datosHistoricos.map(d => new Date(d.timestamp).toLocaleDateString()),
-                },
-                yAxis: {
-                    type: "value",
-                },
-                series: [
-                    {
-                        name: "Temperatura",
-                        type: "line",
-                        data: datosHistoricos.map(d => d.temperatura),
-                    },
-                    {
-                        name: "Humedad",
-                        type: "line",
-                        data: datosHistoricos.map(d => d.humedad),
-                    },
-                    {
-                        name: "Velocidad Viento",
-                        type: "line",
-                        data: datosHistoricos.map(d => d.velocidad_viento),
-                    },
-                    {
-                        name: "Probabilidad_precipitacion",
-                        type: "line",
-                        data: datosHistoricos.map(d => d.probabilidad_precipitacion),
-                    },
+            title: {
+                text: `${translate('Datos históricos')} - ${balizaActual.nombre}`,
+                left: "center",
+            },
+            tooltip: {
+                trigger: "axis",
+            },
+            legend: {
+                data: [
+                translate("Temperatura"),
+                translate("Humedad"),
+                translate("Velocidad Viento"),
+                translate("Probabilidad de precipitacion"),
                 ],
+                top: 30,
+            },
+            grid: {
+                left: "3%",
+                right: "4%",
+                bottom: "3%",
+                containLabel: true,
+            },
+            xAxis: {
+                type: "category",
+                data: datosHistoricos.map(d => new Date(d.timestamp).toLocaleDateString()),
+            },
+            yAxis: {
+                type: "value",
+            },
+            series: [
+                {
+                name: translate("Temperatura"),
+                type: "line",
+                data: datosHistoricos.map(d => d.temperatura),
+                },
+                {
+                name: translate("Humedad"),
+                type: "line",
+                data: datosHistoricos.map(d => d.humedad),
+                },
+                {
+                name: translate("Velocidad Viento"),
+                type: "line",
+                data: datosHistoricos.map(d => d.velocidad_viento),
+                },
+                {
+                name: translate("Probabilidad de precipitacion"),
+                type: "line",
+                data: datosHistoricos.map(d => d.probabilidad_precipitacion),
+                },
+            ],
             };
             myChart.setOption(option, true);
         })
