@@ -18,6 +18,7 @@ function obtenerFechaActual() {
 }
 
 export function getDatosHoyBaliza(baliza) {
+    const lang = localStorage.getItem('selectedLanguage') || 'es'; // Obtener el idioma actual
     return fetch("http://127.0.0.1:85/datosHoy/" + baliza.nombre)
         .then((response) => response.json())
         .then((data) => {
@@ -60,22 +61,40 @@ export function getDatosHoyBaliza(baliza) {
                 `https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/${zona}/locations/${nombreBaliza}/forecast/at/${año}/${mes}/${dia}/for/${año}${mes}${dia}`,
                 options
             )
-                .then((response) => response.blob()) // Obtener el blob
+                .then((response) => response.blob())
                 .then((blob) => {
-                    const reader = new FileReader();
-                    reader.readAsText(blob, "ISO-8859-1"); // Convertir a texto con codificación específica
-                    reader.onload = () => {
-                        try {
-                            const json = JSON.parse(reader.result); // Intentar parsear JSON
-                            baliza.forecast = json.forecastText.SPANISH; // Asignar el forecast
-                        } catch (error) {
-                            console.error("Error parseando JSON:", error);
-                            baliza.forecast = "No se pudo convertir la respuesta en JSON.";
-                        }
-                    };
-                    reader.onerror = () => {
-                        console.error("Error al leer el blob.");
-                    };
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsText(blob, "ISO-8859-1"); // Convertir a texto con codificación específica
+                        reader.onload = () => {
+                            try {
+                                const json = JSON.parse(reader.result); // Intentar parsear JSON
+                                resolve(json);
+                            } catch (error) {
+                                console.error("Error parseando JSON:", error);
+                                reject(error);
+                            }
+                        };
+                        reader.onerror = (error) => {
+                            console.error("Error leyendo el blob:", error);
+                            reject(error);
+                        };
+                    });
+                })
+                .then((json) => {
+                    if (lang === 'es') {
+                        baliza.forecast = json.forecastText.SPANISH;
+                    } else if (lang === 'eu') {
+                        baliza.forecast = json.forecastText.BASQUE;
+                    } else if (lang === 'en') {
+                        // Traducir el forecast al inglés usando la API de MyMemory
+                        const textToTranslate = encodeURIComponent(json.forecastText.SPANISH);
+                        return fetch(`https://api.mymemory.translated.net/get?q=${textToTranslate}&langpair=es|en`)
+                            .then((response) => response.json())
+                            .then((translationData) => {
+                                baliza.forecast = translationData.responseData.translatedText; // Asignar el forecast traducido
+                            });
+                    }
                 })
                 .catch((err) => console.error("Error al obtener la previsión:", err));
         })
