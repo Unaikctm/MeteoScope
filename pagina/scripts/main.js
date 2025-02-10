@@ -1,6 +1,5 @@
 import { iconoCielo, colorCielo, iconoParametro } from "./utils.js";
 import { getDatosBaliza, getDatosHoyBaliza } from "./datos_balizas.js";
-// Importar las funciones de internacionalización
 import { setLanguage, applyTranslations, translate } from './idioma.js';
 
 
