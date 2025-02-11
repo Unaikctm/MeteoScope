@@ -4,7 +4,7 @@ export function getDatosBaliza(nombre) {
 
 function obtenerFechaActual() {
     const fecha = new Date();
-    fecha.setDate(fecha.getDate() - 1); // Restar un día para obtener la fecha de ayer
+    fecha.setDate(fecha.getDate()); // Restar un día para obtener la fecha de ayer
     const año = fecha.getFullYear();
     let mes = fecha.getMonth() + 1;
     if (mes < 10) {
@@ -25,6 +25,7 @@ export function getDatosHoyBaliza(baliza) {
             baliza.datosHoy = data[0];
 
             const { año, mes, dia } = obtenerFechaActual();
+            let dia2 = dia+1;
             console.log("Fecha actual:", año, mes, dia);
 
             let nombreBaliza = baliza.nombre.toLowerCase();
@@ -58,7 +59,7 @@ export function getDatosHoyBaliza(baliza) {
             };
 
             return fetch(
-                `https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/${zona}/locations/${nombreBaliza}/forecast/at/${año}/${mes}/${dia}/for/${año}${mes}${dia}`,
+                `https://api.euskadi.eus/euskalmet/weather/regions/basque_country/zones/${zona}/locations/${nombreBaliza}/forecast/at/${año}/${mes}/${dia}/for/${año}${mes}${dia2}`,
                 options
             )
                 .then((response) => response.blob())

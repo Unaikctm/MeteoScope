@@ -28,7 +28,7 @@ export function colorCielo(estado) {
         case "cielo claro":
             return "linear-gradient(0deg, rgba(252,158,121,1) 0%, rgba(254,236,153,1) 100%)";
         case "algo de nubes":
-            return "linear-gradient(0deg, rgba(12,112,242,1) 0%, rgba(189,245,255,1) 100%)";
+            return "linear-gradient(0deg, rgba(71, 147, 245,1) 0%, rgba(189,245,255,1) 100%)";
         case "nubes":
         case "muy nuboso":
         case "nubes dispersas":
@@ -38,7 +38,7 @@ export function colorCielo(estado) {
             return "linear-gradient(0deg, rgba(169,169,169,1) 0%, rgba(211,211,211,1) 100%)";
         case "llovizna ligera":
         case "lluvia":
-            return "linear-gradient(0deg, rgba(45,65,101,1) 0%, rgba(72,112,154,1) 100%)";
+            return "linear-gradient(0deg, rgba(117,143,191,1) 0%, rgba(107,157,209,1) 100%)";
 
         default:
             return "linear-gradient(0deg, rgba(0,255,0,1) 0%, rgba(255,255,255,1) 100%)";

@@ -104,7 +104,8 @@ function actualizarListaBalizas() {
                 </div>
                 <div class="baliza-content">
                     <div>${iconoCielo(baliza.datosHoy.cielo)}</div>
-                    <div>${translate(mayuscula(baliza.datosHoy.cielo))}</div>
+                    <div id="cielo">${translate(mayuscula(baliza.datosHoy.cielo))}</div>
+                    <div id="linea-divisoria"></div>
                 </div>
                 <div id="fecha_dato">
                     ${translate("Recogido el")}: ${baliza.datosHoy.timestamp}
@@ -118,6 +119,11 @@ function actualizarListaBalizas() {
                 const divParametro = iconoParametro(parametro, parametroValue);
                 card.querySelector('.baliza-content').innerHTML += divParametro;
             });
+
+            // Mostrar la línea divisoria si hay parámetros añadidos
+            if (card.querySelectorAll('.drag-param').length > 0) {
+                card.querySelector('#linea-divisoria').style.display = 'block';
+            }
 
             lista.appendChild(card);
         });
@@ -249,6 +255,8 @@ $(document).ready(function () {
                 if (!card.find(`#${parametro}`).length) {
                     card.append(`${divParametro}`);
 
+                    card.find('#linea-divisoria').css('display', 'block');
+
                     // Guardar el parámetro en localStorage
                     let parametrosGuardados = JSON.parse(localStorage.getItem(`parametros_${baliza.nombre}`)) || [];
                     parametrosGuardados.push(parametro);
@@ -267,7 +275,8 @@ $(document).ready(function () {
 
             // Listener para el botón de eliminación
             $param.find(".x").on("click", function () {
-                const balizaNombre = $param.closest('.baliza-card').attr('id');
+                const $card = $param.closest('.baliza-card'); // Obtenemos la tarjeta contenedora
+                const balizaNombre = $card.attr('id');
                 const parametro = $param.attr('id');
 
                 // Eliminar el parámetro del localStorage
@@ -276,6 +285,10 @@ $(document).ready(function () {
                 localStorage.setItem(`parametros_${balizaNombre}`, JSON.stringify(parametrosGuardados));
 
                 $param.remove(); // Eliminar el parámetro del DOM
+                
+                if ($card.find('.drag-param').length === 0) {
+                    $card.find('#linea-divisoria').css('display', 'none');
+                }
             });
         }
     });
