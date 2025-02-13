@@ -1,5 +1,5 @@
 import { iconoCielo, colorCielo, iconoParametro } from "./utils.js";
-import { getDatosBaliza, getDatosHoyBaliza } from "./datos_balizas.js";
+import { getDatosHoyBaliza } from "./datos_balizas.js";
 import { setLanguage, applyTranslations, translate } from './idioma.js';
 
 
@@ -170,8 +170,17 @@ fetch(url)
                             shadowSize: [41, 41],
                         })
                     );
-                    balizasSeleccionadas.delete(baliza);
+                    balizasSeleccionadas.forEach((b) => {
+                        if (b.nombre === baliza.nombre) {
+                            balizasSeleccionadas.delete(b);
+                        }
+                    });
                     localStorage.removeItem(`parametros_${baliza.nombre}`);
+                    if (balizasSeleccionadas.size === 0) {
+                        localStorage.removeItem('balizasSeleccionadas');
+                    } else {
+                        localStorage.setItem('balizasSeleccionadas', JSON.stringify(Array.from(balizasSeleccionadas)));
+                    }
                 } else {
                     marker.setIcon(
                         L.icon({
@@ -285,7 +294,7 @@ $(document).ready(function () {
                 localStorage.setItem(`parametros_${balizaNombre}`, JSON.stringify(parametrosGuardados));
 
                 $param.remove(); // Eliminar el parámetro del DOM
-                
+
                 if ($card.find('.drag-param').length === 0) {
                     $card.find('#linea-divisoria').css('display', 'none');
                 }
